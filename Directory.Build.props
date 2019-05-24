@@ -8,7 +8,7 @@
     <PackageProjectUrl>https://www.hdfgroup.org/</PackageProjectUrl>
     <Product>HDF.PInvoke</Product>
     <RepositoryUrl>https://github.com/HDFGroup/HDF.PInvoke</RepositoryUrl>
-    <Version>1.10.6</Version>
+    <Version>1.10.5</Version>
     <Prerelease>.1</Prerelease>
 
     <!-- Derived properties -->
