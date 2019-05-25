@@ -1,0 +1,45 @@
+version: '{build}'
+clone_depth: 1
+
+image:
+- Visual Studio 2017
+- Ubuntu
+
+branches:
+  only:
+  - master
+  - dev
+  - native-CI
+
+init:
+  - ps: git config --global core.autocrlf true
+
+before_build:
+- ps: dotnet --info
+- ps: "Get-ChildItem Env:"
+- ps: git submodule update --init --recursive --quiet
+
+build_script:
+- ps: |
+    $url = "https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_1_10_5/source/CMake-hdf5-1.10.5.zip"
+    $archiveName = "$hdf5-1.10.5.zip"
+    $rootFolderName = "CMake-hdf5-1.10.5"
+
+    Invoke-WebRequest -Uri $url -OutFile $archiveName
+    Expand-Archive $archiveName -DestinationPath "."
+    Set-Location -Path $rootFolderName
+
+    if ($isLinux) 
+    { 
+      ctest -S HDF5config.cmake,BUILD_GENERATOR=Unix     -C Release -V -O hdf5.log
+    }
+    elseif ($isWindows)
+    { 
+      ctest -S HDF5config.cmake,BUILD_GENERATOR=VS2017   -C Release -V -O hdf5.log
+      ctest -S HDF5config.cmake,BUILD_GENERATOR=VS201764 -C Release -V -O hdf5.log
+    }
+
+artifacts:
+  - path: "./$rootFolderName/build/bin/release/**/*hdf5*"
+  - path: "./$rootFolderName/build/bin/release/**/*szip*"
+  - path: "./$rootFolderName/build/bin/release/**/*zlib*"
