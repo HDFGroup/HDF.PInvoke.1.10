@@ -9,6 +9,7 @@ branches:
   only:
   - master
   - dev
+  - native-CI
 
 configuration:
   - Release
