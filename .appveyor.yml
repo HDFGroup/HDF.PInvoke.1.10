@@ -35,7 +35,7 @@ build_script:
     }
     elseif ($isWindows)
     { 
-      ctest -S HDF5config.cmake,BUILD_GENERATOR=VS2017   -C Release -V -O hdf5.log
+      #ctest -S HDF5config.cmake,BUILD_GENERATOR=VS2017   -C Release -V -O hdf5.log
       ctest -S HDF5config.cmake,BUILD_GENERATOR=VS201764 -C Release -V -O hdf5.log
     }
 
