@@ -35,4 +35,4 @@ build_script:
     cmake --build . --config Release
 
 artifacts:
-  - path: "./build/bin/*hdf5*"
+  - path: "./build/bin/Release/*hdf5*"
