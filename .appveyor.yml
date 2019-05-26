@@ -37,8 +37,8 @@ build_script:
 
     cmake --build . --config Release
 
-test:
+test_script:
   -ps: ctest . -C Release
 
 artifacts:
-  - path: "./build/bin/*hdf5*.so*"
+  - path: "./build/bin/*hdf5*"
