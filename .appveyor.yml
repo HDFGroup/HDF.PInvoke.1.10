@@ -21,7 +21,7 @@ before_build:
 
 build_script:
 - ps: |
-    git clone --branch hdf5-1_10_5 --depth 1 https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git
+    git clone --branch hdf5-1_10_5 --depth 1 --quiet https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git
 
     New-Item -Path build -ItemType directory
     Set-Location -Path build
