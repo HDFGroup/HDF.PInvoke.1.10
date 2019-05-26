@@ -11,9 +11,6 @@ branches:
   - dev
   - native-CI
 
-init:
-  - ps: git config --global core.autocrlf true
-
 before_build:
 - ps: dotnet --info
 - ps: "Get-ChildItem Env:"
@@ -21,24 +18,21 @@ before_build:
 
 build_script:
 - ps: |
-    git clone --branch hdf5-1_10_5 --depth 1 --quiet https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git
+    git clone --branch hdf5-1_10_5 --depth 1 https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git
 
     New-Item -Path build -ItemType directory
     Set-Location -Path build
 
     if ($isLinux)
     { 
-      cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_SHARED_LIBS:BOOL=ON -DBUILD_TESTING:BOOL=ON -DHDF5_BUILD_TOOLS:BOOL=OFF ./../hdf5
+      cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_SHARED_LIBS:BOOL=ON -DBUILD_TESTING:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF ./../hdf5
     }
     elseif ($isWindows)
     {
-      cmake -G "Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_SHARED_LIBS:BOOL=ON -DBUILD_TESTING:BOOL=ON -DHDF5_BUILD_TOOLS:BOOL=OFF ./../hdf5
+      cmake -G "Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_SHARED_LIBS:BOOL=ON -DBUILD_TESTING:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF ./../hdf5
     }
 
     cmake --build . --config Release
-
-test_script:
-  -ps: ctest . -C Release
 
 artifacts:
   - path: "./build/bin/*hdf5*"
