@@ -30,15 +30,16 @@ build_script:
     -HDF5_BUILD_CPP_LIB:BOOL=OFF
     -HDF5_BUILD_EXAMPLES:BOOL=OFF
     -HDF5_BUILD_FORTRAN:BOOL=OFF
+    -HDF5_BUILD_HL_LIB:BOOL=ON
     "@.replace("`n"," ")
 
     if ($isLinux)
     { 
-      cmake -G "Unix Makefiles" $options ./../hdf5
+      Invoke-Expression "cmake -G "Unix Makefiles" $options ./../hdf5"
     }
     elseif ($isWindows)
     {
-      cmake -G "Visual Studio 15 2017 Win64" $options ./../hdf5
+      Invoke-Expression "cmake -G "Visual Studio 15 2017 Win64" $options ./../hdf5"
     }
 
     cmake --build . --config Release
