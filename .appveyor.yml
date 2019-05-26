@@ -12,7 +12,6 @@ branches:
   - native-CI
 
 before_build:
-- ps: dotnet --info
 - ps: "Get-ChildItem Env:"
 
 build_script:
@@ -21,6 +20,9 @@ build_script:
 
     New-Item -Path build -ItemType directory
     Set-Location -Path ./build
+
+    Invoke-WebRequest -Uri https://github.com/madler/zlib/archive/v1.2.11.tar.gz -OutFile ZLib.tar.gz
+    Invoke-WebRequest -Uri https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz -OutFile SZip.tar.gz
 
     $params = @"
     -DCMAKE_BUILD_TYPE:STRING=Release
@@ -31,6 +33,9 @@ build_script:
     -DHDF5_BUILD_EXAMPLES:BOOL=OFF
     -DHDF5_BUILD_FORTRAN:BOOL=OFF
     -DHDF5_BUILD_HL_LIB:BOOL=ON
+    -DHDF_ENABLE_THREADSAFE:BOOL=ON
+    -DHDF5_ALLOW_EXTERNAL_SUPPORT:STRING=TGZ
+    -DTGZPATH:PATH=."
     "@.replace("`n"," ")
 
     if ($isLinux)
