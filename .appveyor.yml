@@ -2,8 +2,8 @@ version: '{build}'
 clone_depth: 1
 
 image:
-- Visual Studio 2017
 - Ubuntu
+- Visual Studio 2017
 
 branches:
   only:
@@ -20,7 +20,7 @@ build_script:
     git clone --branch hdf5-1_10_5 --depth 1 --quiet https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git
 
     New-Item -Path build -ItemType directory
-    Set-Location -Path build
+    Set-Location -Path ./build
 
     $params = @"
     -DCMAKE_BUILD_TYPE:STRING=Release
@@ -44,5 +44,16 @@ build_script:
 
     cmake --build . --config Release
 
+    if ($isLinux)
+    {
+      Set-Location -Path ./bin
+      7z a -tzip ./../../artifacts.zip ./*.so*
+    }
+    elseif ($isWindows)
+    {
+      Set-Location -Path ./bin/release
+      7z a -tzip ./../../../artifacts.zip ./*.dll
+    }
+
 artifacts:
-  - path: "./build/bin/**/*hdf5*"
+  - path: "artifacts.zip"
