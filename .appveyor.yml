@@ -20,7 +20,7 @@ init:
 before_build:
 - ps: dotnet --info
 - ps: "Get-ChildItem Env:"
-- ps: git submodule update --init --recursive --quiet
+- ps: ./init_solution.ps1
 
 build_script:
 - ps: dotnet build ./src/HDF.PInvoke.NETStandard/HDF.PInvoke.NETStandard.csproj -c $Env:CONFIGURATION
