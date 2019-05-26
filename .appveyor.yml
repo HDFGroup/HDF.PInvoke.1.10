@@ -35,9 +35,9 @@ build_script:
     -DHDF5_BUILD_HL_LIB:BOOL=OFF
     -DHDF5_ENABLE_THREADSAFE:BOOL=ON
     -DHDF5_ALLOW_EXTERNAL_SUPPORT:STRING=TGZ
-    -DZLIB_TGZ_NAME "ZLib.tar.gz"
-    -DSZIP_TGZ_NAME "SZip.tar.gz"
-    -DTGZPATH:PATH=${CMAKE_BINARY_DIR}
+    -DZLIB_TGZ_NAME:STRING=ZLib.tar.gz
+    -DSZIP_TGZ_NAME:STRING=SZip.tar.gz
+    -DTGZPATH:PATH=.
     "@.replace("`n"," ")
 
     if ($isLinux)
