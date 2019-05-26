@@ -39,6 +39,7 @@ build_script:
     }
     elseif ($isWindows)
     {
+      Write-Host "cmake -G 'Visual Studio 15 2017 Win64' $params ./../hdf5"
       Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../hdf5"
     }
 
