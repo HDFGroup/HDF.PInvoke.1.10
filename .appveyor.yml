@@ -21,8 +21,12 @@ build_script:
     New-Item -Path build -ItemType directory
     Set-Location -Path ./build
 
-    Invoke-WebRequest -Uri https://github.com/madler/zlib/archive/v1.2.11.tar.gz -OutFile ZLib.tar.gz
-    Invoke-WebRequest -Uri https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz -OutFile SZip.tar.gz
+    #Invoke-WebRequest -Uri https://github.com/madler/zlib/archive/v1.2.11.tar.gz -OutFile ZLib.tar.gz
+    #Invoke-WebRequest -Uri https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz -OutFile SZip.tar.gz
+    Invoke-WebRequest -Uri https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_1_10_5/source/CMake-hdf5-1.10.5.zip -OutFile CMake-hdf5-1.10.5.zip
+    Expand-Archive -Path CMake-hdf5-1.10.5.zip -DestinationPath .
+    Copy-Item ./CMake-hdf5-1.10.5/ZLib.tar.gz -Destination ./ZLib.tar.gz
+    Copy-Item ./CMake-hdf5-1.10.5/SZip.tar.gz -Destination ./SZip.tar.gz
 
     $params = @"
     -DCMAKE_BUILD_TYPE:STRING=Release
@@ -32,7 +36,6 @@ build_script:
     -DHDF5_BUILD_CPP_LIB:BOOL=OFF
     -DHDF5_BUILD_EXAMPLES:BOOL=OFF
     -DHDF5_BUILD_FORTRAN:BOOL=OFF
-    -DHDF5_BUILD_GENERATORS:BOOL=OFF
     -DHDF5_BUILD_HL_LIB:BOOL=OFF
     -DHDF5_BUILD_JAVA:BOOL=OFF
     -DHDF5_BUILD_TOOLS:BOOL=OFF
