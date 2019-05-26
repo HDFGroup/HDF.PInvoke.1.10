@@ -1,6 +1,6 @@
 function Expand-WebArchive([string]$uri, [string]$runtime)
 {
-    $tmp = New-TemporaryFile
+    $tmp = [System.IO.Path]::GetTempPath() + [System.Guid]::NewGuid().ToString() + ".zip"
     Invoke-WebRequest -Uri $uri -OutFile $tmp
     $tmp | Expand-Archive -DestinationPath ./runtimes/$runtime/native
     $tmp | Remove-Item
