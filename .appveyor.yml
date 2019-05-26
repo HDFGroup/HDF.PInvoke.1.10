@@ -35,11 +35,11 @@ build_script:
 
     if ($isLinux)
     { 
-      Invoke-Expression "cmake -G 'Unix Makefiles' $options ./../hdf5"
+      Invoke-Expression "cmake -G 'Unix Makefiles' $params ./../hdf5"
     }
     elseif ($isWindows)
     {
-      Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $options ./../hdf5"
+      Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../hdf5"
     }
 
     cmake --build . --config Release
