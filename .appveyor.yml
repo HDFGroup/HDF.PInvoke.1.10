@@ -2,8 +2,8 @@ version: '{build}'
 clone_depth: 1
 
 image:
-- Visual Studio 2017
-- Ubuntu
+  - Visual Studio 2017
+  - Ubuntu
 
 branches:
   only:
@@ -18,16 +18,19 @@ init:
   - ps: git config --global core.autocrlf true
 
 before_build:
-- ps: dotnet --info
-- ps: "Get-ChildItem Env:"
-- ps: ./init_solution.ps1
+  - ps: dotnet --info
+  - ps: "Get-ChildItem Env:"
+  - ps: ./init_solution.ps1
 
 build_script:
-- ps: dotnet build ./src/HDF.PInvoke.NETStandard/HDF.PInvoke.NETStandard.csproj -c $Env:CONFIGURATION
+  - ps: dotnet build ./src/HDF.PInvoke.NETStandard/HDF.PInvoke.NETStandard.csproj -c $Env:CONFIGURATION
 
 test_script:
-- ps: dotnet test ./test/NugetTest/NugetTest.csproj -c $Env:CONFIGURATION /p:BuildProjectReferences=false --test-adapter-path:. --logger:Appveyor
-- ps: dotnet test ./test/UnitTests/UnitTests.csproj -c $Env:CONFIGURATION /p:BuildProjectReferences=false --test-adapter-path:. --logger:Appveyor
+  - ps: dotnet test ./test/NugetTest/NugetTest.csproj -c $Env:CONFIGURATION /p:BuildProjectReferences=false --test-adapter-path:. --logger:Appveyor
+  - ps: dotnet test ./test/UnitTests/UnitTests.csproj -c $Env:CONFIGURATION /p:BuildProjectReferences=false --test-adapter-path:. --logger:Appveyor
+
+after_test:
+  - ps: if (-Not (($isLinux)) { Remove-Item ./artifacts/packages/**/*.nupkg }
 
 artifacts:
   - path: ./artifacts/packages/**/*.nupkg
