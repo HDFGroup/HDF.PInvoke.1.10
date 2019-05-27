@@ -72,8 +72,8 @@ build_script:
 
     # create build files
     if     ($isLinux)   { Invoke-Expression "cmake -G 'Unix Makefiles' $params ./../$sourceFolderName" }
-    elseif ($isWindows AND $env:PLATFORM -eq "x64") { Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../$sourceFolderName" }
-    elseif ($isWindows AND $env:PLATFORM -eq "x86") { Invoke-Expression "cmake -G 'Visual Studio 15 2017'       $params ./../$sourceFolderName" }
+    elseif ($isWindows -And $env:PLATFORM -eq "x64") { Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../$sourceFolderName" }
+    elseif ($isWindows -And $env:PLATFORM -eq "x86") { Invoke-Expression "cmake -G 'Visual Studio 15 2017'       $params ./../$sourceFolderName" }
 
     # build
     cmake --build . --config Release
