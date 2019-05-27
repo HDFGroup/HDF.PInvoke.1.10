@@ -53,7 +53,7 @@ build_script:
     -DHDF5_ENABLE_SZIP_ENCODING:BOOL=ON
     -DZLIB_TGZ_NAME:STRING=ZLib.tar.gz
     -DSZIP_TGZ_NAME:STRING=SZip.tar.gz
-    -DTGZPATH:PATH=$((Get-Location).Path/..)
+    -DTGZPATH:PATH=$((Get-Location).Path)/..
     "@.replace("`n"," ")
 
     # create build files
