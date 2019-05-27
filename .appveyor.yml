@@ -2,8 +2,17 @@ version: '{build}'
 clone_depth: 1
 
 image:
-- Ubuntu
-- Visual Studio 2017
+  - Ubuntu
+  - Visual Studio 2017
+
+platform:
+  - x86
+  - x64
+
+matrix:
+  exclude:
+    - image: Ubuntu
+      platform: x86
 
 branches:
   only:
@@ -12,7 +21,7 @@ branches:
   - native-CI
 
 before_build:
-- ps: "Get-ChildItem Env:"
+  - ps: "Get-ChildItem Env:"
 
 build_script:
 - ps: |
@@ -63,7 +72,8 @@ build_script:
 
     # create build files
     if     ($isLinux)   { Invoke-Expression "cmake -G 'Unix Makefiles' $params ./../$sourceFolderName" }
-    elseif ($isWindows) { Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../$sourceFolderName" }
+    elseif ($isWindows AND $env:PLATFORM -eq "x64") { Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../$sourceFolderName" }
+    elseif ($isWindows AND $env:PLATFORM -eq "x86") { Invoke-Expression "cmake -G 'Visual Studio 15 2017'       $params ./../$sourceFolderName" }
 
     # build
     cmake --build . --config Release
