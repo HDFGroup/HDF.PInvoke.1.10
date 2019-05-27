@@ -21,13 +21,17 @@ build_script:
     $version2 = "1_10_5"
     $topFolderName = "CMake-hdf5-$version1"
     $sourceFolderName = "hdf5-$version1"
-    $url = "https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_$version2/source/CMake-hdf5-$version1.zip"
+
+    if     ($isLinux)   { $extension = "tar.gz" }
+    elseif ($isWindows) { $extension = "zip" }
+
+    $url = "https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_$version2/source/CMake-hdf5-$version1.$extension"
 
     # download and extract source files
-    Invoke-WebRequest -Uri $url -OutFile archive
+    Invoke-WebRequest -Uri $url -OutFile archive.$extension
 
-    if     ($isLinux)   { tar xzf archive }
-    elseif ($isWindows) { Expand-Archive -Path archive -DestinationPath . }
+    if     ($isLinux)   { tar xzf archive.$extension }
+    elseif ($isWindows) { Expand-Archive -Path archive.$extension -DestinationPath . }
 
     # create build folder
     New-Item -Path ./$topFolderName/build -ItemType directory
