@@ -16,18 +16,23 @@ before_build:
 
 build_script:
 - ps: |
-    git clone --branch hdf5-1_10_5 --depth 1 --quiet https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git
+    # define parameters
+    $version1 = "1.10.5"
+    $version2 = "1_10_5"
+    $archiveName = "CMake-hdf5-$version1.zip"
+    $topFolderName = "CMake-hdf5-$version1"
+    $sourceFolderName = "hdf5-$version1"
+    $url = "https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_$version2/source/CMake-hdf5-$version1.zip"
 
-    New-Item -Path build -ItemType directory
-    Set-Location -Path ./build
+    # download release
+    Invoke-WebRequest -Uri $url -OutFile $archiveName
+    Expand-Archive -Path $archiveName -DestinationPath .
 
-    #Invoke-WebRequest -Uri https://github.com/madler/zlib/archive/v1.2.11.tar.gz -OutFile ZLib.tar.gz
-    #Invoke-WebRequest -Uri https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz -OutFile SZip.tar.gz
-    Invoke-WebRequest -Uri https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_1_10_5/source/CMake-hdf5-1.10.5.zip -OutFile CMake-hdf5-1.10.5.zip
-    Expand-Archive -Path CMake-hdf5-1.10.5.zip -DestinationPath .
-    Copy-Item ./CMake-hdf5-1.10.5/ZLib.tar.gz -Destination ./ZLib.tar.gz
-    Copy-Item ./CMake-hdf5-1.10.5/SZip.tar.gz -Destination ./SZip.tar.gz
+    # create build folder
+    New-Item -Path ./$topFolderName/build -ItemType directory
+    Set-Location -Path ./$topFolderName/build
 
+    # define CMAKE options
     $params = @"
     -DCMAKE_BUILD_TYPE:STRING=Release
     -DBUILD_SHARED_LIBS:BOOL=ON
@@ -47,29 +52,32 @@ build_script:
     -DHDF5_ENABLE_SZIP_ENCODING:BOOL=ON
     -DZLIB_TGZ_NAME:STRING=ZLib.tar.gz
     -DSZIP_TGZ_NAME:STRING=SZip.tar.gz
-    -DTGZPATH:PATH=$((Get-Location).Path)
+    -DTGZPATH:PATH=$((Get-Location).Path/..)
     "@.replace("`n"," ")
 
+    # create build files
     if ($isLinux)
     { 
-      Invoke-Expression "cmake -G 'Unix Makefiles' $params ./../hdf5"
+      Invoke-Expression "cmake -G 'Unix Makefiles' $params ./../$sourceFolderName"
     }
     elseif ($isWindows)
     {
-      Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../hdf5"
+      Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../$sourceFolderName"
     }
 
+    # build
     cmake --build . --config Release
 
+    # collect artifacts
     if ($isLinux)
     {
       Set-Location -Path ./bin
-      7z a -tzip ./../../artifacts.zip ./*.so*
+      7z a -tzip ./../../../artifacts.zip ./*hdf5*.so*
     }
     elseif ($isWindows)
     {
       Set-Location -Path ./bin/release
-      7z a -tzip ./../../../artifacts.zip ./*.dll
+      7z a -tzip ./../../../../artifacts.zip ./*hdf5*.dll
     }
 
 artifacts:
