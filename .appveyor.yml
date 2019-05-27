@@ -33,4 +33,4 @@ after_test:
   - ps: if (-Not $isLinux) { Remove-Item ./artifacts/packages/**/*.nupkg }
 
 artifacts:
-  - path: ./artifacts/packages/**/*.nupkg
+  - path: ./artifacts/packages/*.nupkg

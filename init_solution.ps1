@@ -2,6 +2,7 @@ function Expand-WebArchiveLinux([string]$uri, [string]$runtime)
 {
     $tmp = [System.IO.Path]::GetTempPath() + [System.Guid]::NewGuid().ToString() + ".zip"
     Invoke-WebRequest -Uri $uri -OutFile $tmp
+    mkdir -p ./runtimes/$runtime/native
     unzip $tmp -d ./runtimes/$runtime/native
     $tmp | Remove-Item
 }
