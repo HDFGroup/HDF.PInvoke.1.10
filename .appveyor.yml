@@ -72,12 +72,12 @@ build_script:
     if ($isLinux)
     {
       Set-Location -Path ./bin
-      7z a -tzip ./../../../artifacts.zip ./*hdf5*.so*
+      zip -y ./../../../artifacts.zip ./*hdf5*.so*
     }
     elseif ($isWindows)
     {
       Set-Location -Path ./bin/release
-      7z a -tzip ./../../../../artifacts.zip ./*hdf5*.dll
+      Compress-Archive -Path ./*hdf5*.dll -DestinationPath ./../../../../artifacts.zip
     }
 
 artifacts:
