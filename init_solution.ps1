@@ -17,8 +17,8 @@ function Expand-WebArchiveWindows([string]$uri, [string]$runtime)
 
 git submodule update --init --recursive --quiet
 
-$linuxUri   = "https://ci.appveyor.com/api/buildjobs/yqyton27jvhrveyy/artifacts/artifacts.zip"
-$windowsUri = "https://ci.appveyor.com/api/buildjobs/39qb173mp0aa0u40/artifacts/artifacts.zip"
+$linuxUri   = "https://ci.appveyor.com/api/buildjobs/tokk810oncanq905/artifacts/artifacts.zip"
+$windowsUri = "https://ci.appveyor.com/api/buildjobs/5am37tyjc74wjpgg/artifacts/artifacts.zip"
 
 if ($isLinux)
 {
