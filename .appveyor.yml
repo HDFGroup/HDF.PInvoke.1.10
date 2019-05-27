@@ -30,7 +30,7 @@ test_script:
   - ps: dotnet test ./test/UnitTests/UnitTests.csproj -c $Env:CONFIGURATION /p:BuildProjectReferences=false --test-adapter-path:. --logger:Appveyor
 
 after_test:
-  - ps: if (-Not $isLinux) { Remove-Item ./artifacts/packages/**/*.nupkg }
+  - ps: if (-Not $isLinux) { Remove-Item ./artifacts/packages/*.nupkg }
 
 artifacts:
-  - path: ./artifacts/packages/*.nupkg
+  - path: ./artifacts/packages/**/*.nupkg
