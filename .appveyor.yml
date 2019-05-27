@@ -19,14 +19,15 @@ build_script:
     # define parameters
     $version1 = "1.10.5"
     $version2 = "1_10_5"
-    $archiveName = "CMake-hdf5-$version1.zip"
     $topFolderName = "CMake-hdf5-$version1"
     $sourceFolderName = "hdf5-$version1"
     $url = "https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_$version2/source/CMake-hdf5-$version1.zip"
 
-    # download release
-    Invoke-WebRequest -Uri $url -OutFile $archiveName
-    Expand-Archive -Path $archiveName -DestinationPath .
+    # download and extract source files
+    Invoke-WebRequest -Uri $url -OutFile archive
+
+    if     ($isLinux)   { tar xzf archive }
+    elseif ($isWindows) { Expand-Archive -Path archive -DestinationPath . }
 
     # create build folder
     New-Item -Path ./$topFolderName/build -ItemType directory
@@ -56,14 +57,8 @@ build_script:
     "@.replace("`n"," ")
 
     # create build files
-    if ($isLinux)
-    { 
-      Invoke-Expression "cmake -G 'Unix Makefiles' $params ./../$sourceFolderName"
-    }
-    elseif ($isWindows)
-    {
-      Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../$sourceFolderName"
-    }
+    if     ($isLinux)   { Invoke-Expression "cmake -G 'Unix Makefiles' $params ./../$sourceFolderName" }
+    elseif ($isWindows) { Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../$sourceFolderName" }
 
     # build
     cmake --build . --config Release
