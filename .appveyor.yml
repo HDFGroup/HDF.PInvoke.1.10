@@ -26,8 +26,12 @@ build_script:
   - ps: dotnet build ./src/HDF.PInvoke.NETStandard/HDF.PInvoke.NETStandard.csproj -c $Env:CONFIGURATION
 
 test_script:
- - ps: dotnet test ./test/NugetTest/NugetTest.csproj -c $Env:CONFIGURATION /p:BuildProjectReferences=false --test-adapter-path:. --logger:Appveyor
- - ps: dotnet test ./test/UnitTests/UnitTests.csproj -c $Env:CONFIGURATION /p:BuildProjectReferences=false --test-adapter-path:. --logger:Appveyor --filter FullyQualifiedName!=UnitTests.H5LTest.H5Lunpack_elink_valTest3
+- ps: >-
+    dotnet test ./test/NugetTest/NugetTest.csproj -c $Env:CONFIGURATION /p:BuildProjectReferences=false `
+    --test-adapter-path:. --logger:Appveyor
+- ps: >-
+    dotnet test ./test/UnitTests/UnitTests.csproj -c $Env:CONFIGURATION /p:BuildProjectReferences=false `
+    --test-adapter-path:. --logger:Appveyor --filter FullyQualifiedName!=UnitTests.H5LTest.H5Lunpack_elink_valTest3
 
 after_test:
   - ps: if (-Not $isLinux) { Remove-Item ./artifacts/packages/*.nupkg }

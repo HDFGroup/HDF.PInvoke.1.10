@@ -19,17 +19,6 @@
       <Link>submodule/src/%(Filename)%(Extension)</Link>
     </Compile>
 
-    <!-- Add native files -->
-    <Content Include="$(Root)runtimes/**/*hdf5*.so">
-      <Link>runtimes/%(RecursiveDir)%(Filename)%(Extension)</Link>
-      <PackagePath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
-    </Content>
-
-    <Content Include="$(Root)runtimes/**/hdf5*.dll">
-      <Link>runtimes/%(RecursiveDir)%(Filename)%(Extension)</Link>
-      <PackagePath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
-    </Content>
-
   </ItemGroup>
 
 </Project>
