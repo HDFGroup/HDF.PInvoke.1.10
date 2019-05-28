@@ -1,0 +1,50 @@
+<Project>
+
+  <UsingTask TaskName="CheckProcessArchitecture"
+             TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" >
+    <ParameterGroup>
+      <Is64BitProcess ParameterType="System.Boolean" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System"/>
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        Is64BitProcess = Environment.Is64BitProcess;
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name="CopyNativeFilesToOutput" BeforeTargets="BeforeBuild">
+    <CheckProcessArchitecture>
+      <Output TaskParameter="Is64BitProcess" PropertyName="Is64BitProcess"/>
+    </CheckProcessArchitecture>
+
+    <PropertyGroup>
+      <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'True'">True</IsWindows>
+      <IsLinux   Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'   == 'True'">True</IsLinux>
+    </PropertyGroup>
+
+    <!-- Linux (x64) -->
+    <ItemGroup Condition="$(IsLinux) == 'True' AND $(Is64BitProcess) == 'True'">
+      <Content Include="$(Root)runtimes/linux-x64/**/*hdf5*.so">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <!-- Windows (x64) -->
+    <ItemGroup Condition="$(IsWindows) == 'True' AND $(Is64BitProcess) == 'True'">
+      <Content Include="$(Root)runtimes/win-x64/**/hdf5*.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <!-- Windows (x86) -->
+    <ItemGroup Condition="$(IsWindows) == 'True' AND $(Is64BitProcess) == 'False'">
+      <Content Include="$(Root)runtimes/win-x86/**/hdf5*.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+  </Target>
+</Project>

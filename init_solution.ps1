@@ -31,5 +31,5 @@ elseif ($isWindows)
 {
     Expand-WebArchiveWindows $linuxUrl "linux-x64"
     Expand-WebArchiveWindows $windowsUrl_x64 "win-x64"
-    Expand-WebArchiveWindows $windowsUrl_x64 "win-x86"
+    Expand-WebArchiveWindows $windowsUrl_x86 "win-x86"
 }

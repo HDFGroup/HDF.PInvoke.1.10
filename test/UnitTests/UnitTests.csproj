@@ -1,5 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="./../../build/build.targets" />
+
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
@@ -21,5 +23,5 @@
   <ItemGroup>
     <ProjectReference Include="$(Root)src/HDF.PInvoke.NETStandard/HDF.PInvoke.NETStandard.csproj" />
   </ItemGroup>
-  
+
 </Project>

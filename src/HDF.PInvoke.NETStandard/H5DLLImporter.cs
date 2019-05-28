@@ -14,30 +14,29 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
-using System.Runtime.InteropServices;
 using System.IO;
-
-#if HDF5_VER1_10
+using System.Reflection;
+using System.Runtime.InteropServices;
 using hid_t = System.Int64;
-#else
-using hid_t = System.Int32;
-#endif
 
 namespace HDF.PInvoke
 {
+    // Only for compatiblity with the HDF.PInvoke version referenced in submodule
+    public static class NativeDependencies
+    {
+        public static void ResolvePathToExternalDependencies() { }
+    }
+
     internal delegate T Converter<T>(IntPtr address);
 
-    /// <summary>
-    /// Helper class used to fetch public variables (e.g. native type values)
-    /// exported by the HDF5 DLL
-    /// </summary>
     internal abstract class H5DLLImporter
     {
         public static readonly H5DLLImporter Instance;
 
         static H5DLLImporter()
         {
-            H5.open();
+            if (H5.open() < 0)
+                throw new Exception("Could not initialize HDF5 library.");
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 Instance = new H5LinuxDllImporter(Constants.DLLFileName);
@@ -49,35 +48,15 @@ namespace HDF.PInvoke
                 throw new PlatformNotSupportedException();
         }
 
-        protected abstract IntPtr _GetAddress(string varName);
+        protected abstract IntPtr InternalGetAddress(string varName);
 
         public IntPtr GetAddress(string varName)
         {
-            var address = _GetAddress(varName);
+            var address = this.InternalGetAddress(varName);
             if (address == IntPtr.Zero)
                 throw new Exception(string.Format("The export with name \"{0}\" doesn't exist.", varName));
             return address;
         }
-
-        public bool GetAddress(string varName, out IntPtr address)
-        {
-            address = _GetAddress(varName);
-            return (address == IntPtr.Zero);
-        }
-
-        /*public bool GetValue<T>(
-            string          varName,
-            ref T           value,
-            Func<IntPtr, T> converter
-            )
-        {
-            IntPtr address;
-            if (!this.GetAddress(varName, out address))
-                return false;
-            value = converter(address);
-            return true;
-            //return (T) Marshal.PtrToStructure(address,typeof(T));
-        }*/
 
         public unsafe hid_t GetHid(string varName)
         {
@@ -85,148 +64,126 @@ namespace HDF.PInvoke
         }
     }
 
-    #region Windows Importer
     internal class H5WindowsDLLImporter : H5DLLImporter
     {
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32.dll")]
         internal static extern IntPtr GetModuleHandle(string lpszLib);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        internal static extern IntPtr GetProcAddress
-            (IntPtr hModule, string procName);
+        [DllImport("kernel32.dll")]
+        internal static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        internal static extern IntPtr LoadLibrary(string lpszLib);
-
-        private IntPtr hLib;
+        private IntPtr _handle;
 
         public H5WindowsDLLImporter(string libName)
         {
-            Console.WriteLine("Step1");
+            _handle = GetModuleHandle(libName);
 
-            hLib = GetModuleHandle(libName);
-            Console.WriteLine("Step2");
-            if (hLib == IntPtr.Zero)  // the library hasn't been loaded
-            {
-                Console.WriteLine("Step3");
-                hLib = LoadLibrary(libName);
-                if (hLib == IntPtr.Zero)
-                {
-                    Console.WriteLine("Step4");
-                    try
-                    {
-                        Marshal.ThrowExceptionForHR(Marshal.GetLastWin32Error());
-                    }
-                    catch (Exception e)
-                    {
-                        throw new Exception(string.Format("Couldn't load library \"{0}\"", libName), e);
-                    }
-                } 
-            }
-            Console.WriteLine("Step5");
+            if (_handle == IntPtr.Zero)
+                throw new DllNotFoundException(libName);
         }
 
-        protected override IntPtr _GetAddress(string varName)
+        protected override IntPtr InternalGetAddress(string varName)
         {
-            return GetProcAddress(hLib, varName);
+            return GetProcAddress(_handle, varName);
         }
     }
-    #endregion
 
     internal class H5LinuxDllImporter : H5DLLImporter
     {
-        [DllImport("libdl.so.2")]
+        [DllImport("libdl.so")]
         protected static extern IntPtr dlopen(string filename, int flags);
 
-        [DllImport("libdl.so.2")]
+        [DllImport("libdl.so")]
         protected static extern IntPtr dlsym(IntPtr handle, string symbol);
 
-        [DllImport("libdl.so.2")]
+        [DllImport("libdl.so")]
         protected static extern IntPtr dlerror();
 
-        private IntPtr hLib;
+        private const int RTLD_NOW = 2;
+        private IntPtr _handle;
 
+        // The library is already loaded, otherwise H5.open() above would not have been called successfully.
+        // However, to get the lib handle for the symbols, we need to "reopen" it using the correct path.
         public H5LinuxDllImporter(string libName)
         {
-            // If the library is referenced directly, i.e. for UnitTests.csproj, the native libs 
-            // are located in the same directory as the library itself.
-            // If the library is referenced via a NuGet package, the native libs are located
-            // in the runtimes/linux-x64/native subfolder of the package.
-            var filename = "lib" + libName + ".so";
-            var libDir = Path.GetDirectoryName(NativeDependencies.GetAssemblyName());
-            var inLibDir = Path.Combine(libDir, filename);
-            var inPkgDir = Path.Combine(libDir, "..", "..", "runtimes", "linux-x64", "native", filename);
-            if (File.Exists(inLibDir))
-                libName = inLibDir;
-            else if (File.Exists(inPkgDir))
-                libName = inPkgDir;
+            string filePath;
 
-            hLib = dlopen(libName, RTLD_NOW);
-            if (hLib == IntPtr.Zero)
-            {
-                throw new ArgumentException(
-                    String.Format("Unable to load unmanaged module \"{0}\"", libName));
-            }
+            var fileName = $"lib{libName}.so";
+            var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var localPath = Path.Combine(basePath, fileName);
+            var packagePath = Path.Combine(basePath, "..", "..", "runtimes", "linux-x64", "native", fileName);
+
+            if (File.Exists(localPath))
+                filePath = localPath;
+            else if (File.Exists(packagePath))
+                filePath = packagePath;
+            else
+                throw new FileNotFoundException(libName);
+
+            _handle = dlopen(filePath, RTLD_NOW);
+
+            if (_handle == IntPtr.Zero)
+                throw new DllNotFoundException(libName);
         }
 
-        const int RTLD_NOW = 2; // for dlopen's flags
-        protected override IntPtr _GetAddress(string varName)
+        protected override IntPtr InternalGetAddress(string varName)
         {
-            var address = dlsym(hLib, varName);
+            var address = dlsym(_handle, varName);
             var errPtr = dlerror();
+
             if (errPtr != IntPtr.Zero)
-            {
                 throw new Exception("dlsym: " + Marshal.PtrToStringAnsi(errPtr));
-            }
+
             return address;
         }
     }
 
     internal class H5MacDllImporter : H5DLLImporter
     {
-        [DllImport("libdl")]
+        [DllImport("libdl.so")]
         protected static extern IntPtr dlopen(string filename, int flags);
 
-        [DllImport("libdl")]
+        [DllImport("libdl.so")]
         protected static extern IntPtr dlsym(IntPtr handle, string symbol);
 
-        [DllImport("libdl")]
+        [DllImport("libdl.so")]
         protected static extern IntPtr dlerror();
 
-        private IntPtr hLib;
+        private const int RTLD_NOW = 2;
+        private IntPtr _handle;
 
+        // The library is already loaded, otherwise H5.open() above would not have been called successfully.
+        // However, to get the lib handle for the symbols, we need to "reopen" it using the correct path.
         public H5MacDllImporter(string libName)
         {
-            // If the library is referenced directly, i.e. for UnitTests.csproj, the native libs 
-            // are located in the same directory as the library itself.
-            // If the library is referenced via a NuGet package, the native libs are located
-            // in the runtimes/osx-x64/native subfolder of the package.
-            var filename = "lib" + libName + ".dylib";
-            var libDir = Path.GetDirectoryName(NativeDependencies.GetAssemblyName());
-            var inLibDir = Path.Combine(libDir, filename);
-            var inPkgDir = Path.Combine(libDir, "..", "..", "runtimes", "osx-x64", "native", filename);
-            if (File.Exists(inLibDir))
-                libName = inLibDir;
-            else if (File.Exists(inPkgDir))
-                libName = inPkgDir;
+            string filePath;
 
-            hLib = dlopen(libName, RTLD_NOW);
-            if (hLib == IntPtr.Zero)
-            {
-                throw new ArgumentException(
-                    String.Format("Unable to load unmanaged module \"{0}\"", libName));
-            }
+            var fileName = $"lib{libName}.dylib";
+            var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var localPath = Path.Combine(basePath, fileName);
+            var packagePath = Path.Combine(basePath, "..", "..", "runtimes", "osx-x64", "native", fileName);
+
+            if (File.Exists(localPath))
+                filePath = localPath;
+            else if (File.Exists(packagePath))
+                filePath = packagePath;
+            else
+                throw new FileNotFoundException(libName);
+
+            _handle = dlopen(filePath, RTLD_NOW);
+
+            if (_handle == IntPtr.Zero)
+                throw new DllNotFoundException(libName);
         }
 
-        const int RTLD_NOW = 2; // for dlopen's flags
-        protected override IntPtr _GetAddress(string varName)
+        protected override IntPtr InternalGetAddress(string varName)
         {
-            var address = dlsym(hLib, varName);
+            var address = dlsym(_handle, varName);
             var errPtr = dlerror();
+
             if (errPtr != IntPtr.Zero)
-            {
                 throw new Exception("dlsym: " + Marshal.PtrToStringAnsi(errPtr));
-            }
+
             return address;
         }
     }

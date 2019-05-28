@@ -13,32 +13,23 @@
   <ItemGroup>
 
     <!-- Add source files -->
-    <Compile Include="$(Root)src/HDF.PInvoke.NETStandard/*.cs"/>
+    <Compile Include="$(Root)src/HDF.PInvoke.NETStandard/*.cs" />
 
-    <Compile Include="$(Root)submodules/HDF.PInvoke/HDF5/*.cs"
-             Exclude="$(SourceFolder)Constants.cs;$(SourceFolder)H5DLLImporter.cs;$(SourceFolder)NativeDependencies.cs">
+    <Compile Include="$(Root)submodules/HDF.PInvoke/HDF5/*.cs" Exclude="$(SourceFolder)Constants.cs;$(SourceFolder)H5DLLImporter.cs;$(SourceFolder)NativeDependencies.cs">
       <Link>submodule/src/%(Filename)%(Extension)</Link>
     </Compile>
 
     <!-- Add native files -->
     <Content Include="$(Root)runtimes/**/*hdf5*.so">
-      <Link>%(Filename)%(Extension)</Link>
+      <Link>runtimes/%(RecursiveDir)%(Filename)%(Extension)</Link>
       <PackagePath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
 
-    <Content Include="$(Root)runtimes/win-x64/**/hdf5*.dll">
-      <Link>bin64/%(Filename)%(Extension)</Link>
-      <PackagePath>runtimes/win-x64/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="$(Root)runtimes/**/hdf5*.dll">
+      <Link>runtimes/%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <PackagePath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
     </Content>
 
-    <Content Include="$(Root)runtimes/win-x86/**/hdf5*.dll">
-      <Link>bin32/%(Filename)%(Extension)</Link>
-      <PackagePath>runtimes/win-x86/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    
   </ItemGroup>
- 
+
 </Project>
