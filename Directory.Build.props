@@ -9,7 +9,7 @@
     <Product>HDF.PInvoke</Product>
     <RepositoryUrl>https://github.com/HDFGroup/HDF.PInvoke</RepositoryUrl>
     <Version>1.10.5</Version>
-    <Prerelease>.1</Prerelease>
+    <Prerelease>.0</Prerelease>
 
     <!-- Derived properties -->
     <AssemblyVersion>$(Version)</AssemblyVersion>
