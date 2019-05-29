@@ -27,8 +27,6 @@ namespace HDF.PInvoke
         public static void ResolvePathToExternalDependencies() { }
     }
 
-    internal delegate T Converter<T>(IntPtr address);
-
     internal abstract class H5DLLImporter
     {
         public static readonly H5DLLImporter Instance;
