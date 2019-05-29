@@ -1,14 +1,6 @@
 <Project>
 
-  <!-- Link all files under the runtimes folder for .nupkg but do not copy or compile them. -->
-  <ItemGroup>
-    <Content Include="$(Root)runtimes/**/*hdf5*.so;$(Root)runtimes/**/hdf5*.dll">
-      <LinkBase>runtimes</LinkBase>
-      <PackagePath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
-    </Content>
-  </ItemGroup>
-
-  <!-- Here, the files will be copied depending on the architecture. -->
+  <!-- Copy files depending on the architecture. -->
   <Target Name="CopyNativeFilesToOutput" BeforeTargets="BeforeBuild">
     <PropertyGroup>
       <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'True'">True</IsWindows>

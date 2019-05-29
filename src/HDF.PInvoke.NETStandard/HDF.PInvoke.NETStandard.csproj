@@ -1,24 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Common properties -->
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>$(Root)submodules/HDF.PInvoke/HDF.PInvoke.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageTags>HDF HDF5 Hierarchical Data Format</PackageTags>
-    <PublicSign>true</PublicSign>
-    <SignAssembly>true</SignAssembly>
     <SourceFolder>$(Root)submodules/HDF.PInvoke/HDF5/</SourceFolder>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <!-- Add source files -->
   <ItemGroup>
-
-    <!-- Add source files -->
     <Compile Include="$(Root)src/HDF.PInvoke.NETStandard/*.cs" />
-
     <Compile Include="$(Root)submodules/HDF.PInvoke/HDF5/*.cs" Exclude="$(SourceFolder)Constants.cs;$(SourceFolder)H5DLLImporter.cs;$(SourceFolder)NativeDependencies.cs">
       <Link>submodule/src/%(Filename)%(Extension)</Link>
     </Compile>
-
   </ItemGroup>
 
 </Project>
