@@ -4,10 +4,10 @@
     <AssemblyOriginatorKeyFile>$(Root)submodules/HDF.PInvoke/HDF.PInvoke.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageTags>HDF HDF5 Hierarchical Data Format</PackageTags>
-    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <PublicSign>true</PublicSign>
     <SignAssembly>true</SignAssembly>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <SourceFolder>$(Root)submodules/HDF.PInvoke/HDF5/</SourceFolder>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
