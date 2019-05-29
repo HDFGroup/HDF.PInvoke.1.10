@@ -13,12 +13,22 @@
  * access to either file, you may request a copy from help@hdfgroup.org.     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-namespace HDF.PInvoke
-{
-    public static class Constants
-    {
-        public const string DLLFileName = "hdf5";
+using HDF.PInvoke;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-        public const string HLDLLFileName = "hdf5_hl";
+#if HDF5_VER1_10
+
+namespace UnitTests
+{
+    public partial class H5ZTest
+    {
+        [TestMethod]
+        public void H5Zfilter_avail()
+        {
+            Assert.IsTrue(H5Z.filter_avail(H5Z.filter_t.DEFLATE) >= 0);  // ZLIB
+            Assert.IsTrue(H5Z.filter_avail(H5Z.filter_t.SZIP) >= 0);     // SZIP
+        }
     }
 }
+
+#endif

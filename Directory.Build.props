@@ -1,24 +1,27 @@
 <Project>
 
   <PropertyGroup>
+    <Root>$(MSBuildThisFileDirectory)</Root>
+
     <!-- NuGet and AssemblyInfo properties -->
     <Authors>The HDF Group</Authors>
     <Copyright>Copyright © 2019</Copyright>
+    <Description>This package contains PInvoke declarations for the (unmanaged) HDF5 1.10.x C-API. For documenation, see the "HDF5: API Specification Reference Manual" at http://www.hdfgroup.org/HDF5/doc/RM/RM_H5Front.html.</Description>
     <PackageLicenseFile>COPYING</PackageLicenseFile>
     <PackageProjectUrl>https://www.hdfgroup.org/</PackageProjectUrl>
     <Product>HDF.PInvoke</Product>
-    <RepositoryUrl>https://github.com/HDFGroup/HDF.PInvoke</RepositoryUrl>
-    <Version>1.10.6</Version>
-    <Prerelease>.1</Prerelease>
+    <RepositoryUrl>https://github.com/HDFGroup/HDF.PInvoke.NETStandard</RepositoryUrl>
+    <Version>1.10.500</Version>
+    <Prerelease>-preview1</Prerelease>
 
     <!-- Derived properties -->
-    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <AssemblyVersion>$(Version).0</AssemblyVersion>
     <Company>$(Authors)</Company>
-    <FileVersion>$(Version)</FileVersion>
+    <FileVersion>$(Version).0</FileVersion>
     <PackageVersion>$(Version)$(Prerelease)</PackageVersion>
    
     <!-- Artifacts -->
-    <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
+    <ArtifactsPath>$(Root)artifacts</ArtifactsPath>
     <BaseIntermediateOutputPath>$(ArtifactsPath)/obj/$(MSBuildProjectName)</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)/$(Configuration)</IntermediateOutputPath>
     <OutputPath>$(ArtifactsPath)/bin/$(MSBuildProjectName)/$(Configuration)</OutputPath>
@@ -26,12 +29,22 @@
 
     <!-- Misc -->
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>embedded</DebugType>
     <DefineConstants>$(DefineConstants);HDF5_VER1_10</DefineConstants>
-    <Root>$(MSBuildThisFileDirectory)</Root>
+    <EmbedAllSources>true</EmbedAllSources>
   </PropertyGroup>
 
+  <!-- Make sure that the license is present in the NuGet package. -->
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)COPYING" Pack="true" PackagePath="" Visible="false" />
+    <None Include="$(Root)COPYING" Pack="true" PackagePath="" Visible="false" />
+  </ItemGroup>
+
+  <!-- Link all files under the runtimes folder for NuGet package. -->
+  <ItemGroup>
+    <Content Include="$(Root)runtimes/**/*hdf5*.so;$(Root)runtimes/**/hdf5*.dll">
+      <LinkBase>runtimes</LinkBase>
+      <PackagePath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
+    </Content>
   </ItemGroup>
   
 </Project>
