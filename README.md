@@ -22,7 +22,7 @@ To install the latest version, run the following command in the
 [Package Manager Console](https://docs.nuget.org/docs/start-here/using-the-package-manager-console):
 
 ```
-dotnet add package HDF.PInvoke.NETStandard -Version 1.10.5.0-preview1
+dotnet add package HDF.PInvoke.NETStandard -Version 1.10.500-preview1
 ```
 
 ## Prerequisites
