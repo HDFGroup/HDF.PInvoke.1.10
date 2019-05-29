@@ -3,7 +3,7 @@
 This project is based on [HDF.PInvoke for .NET Framework](https://github.com/HDFGroup/HDF.PInvoke) and aims to bring it to .NET Standard 2.0+. The first supported version is HDF5 [1.10.5](https://portal.hdfgroup.org/display/support/Downloads) for Windows (x86, x64) and Linux (x64). Support for OSX will be added in futures version when the CI provider ([AppVeyor](https://www.appveyor.com/)) supports building on OSX or using [Travis](https://travis-ci.org/) as an alternative.
 
 ![AppVeyor Project status badge](https://ci.appveyor.com/api/projects/status/github/HDFGroup/HDF.PInvoke.NETStandard?branch=master&svg=true)
-[![NuGet](https://img.shields.io/nuget/v/HDF.PInvoke.NETStandard.svg?label=Nuget)](https://www.nuget.org/packages/HDF.PInvoke.NETStandard)
+[![NuGet](https://img.shields.io/nuget/vpre/HDF.PInvoke.NETStandard.svg?label=Nuget)](https://www.nuget.org/packages/HDF.PInvoke.NETStandard)
 [![Gitter](https://badges.gitter.im/HDFGroup/HDF.PInvoke.svg)](https://gitter.im/HDFGroup/HDF.PInvoke?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 <a href="https://groups.google.com/forum/#!forum/sharp-hdf5"><img src="https://groups.google.com/forum/my-groups-color.png" width="35" height="35"></a>
 
