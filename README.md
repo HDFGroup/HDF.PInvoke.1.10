@@ -30,7 +30,7 @@ dotnet add package HDF.PInvoke.NETStandard -Version 1.10.500-preview1
 The ``HDF.PInvoke.dll`` managed assembly depends on the following native libraries:
 - HDF5 core API, ``hdf5.dll`` / ``libhdf5.so``
 - HDF5 high-level APIs, ``hdf5_hl.dll`` / ``libhdf5_hl.so``
-- The C-runtime of the Visual Studio version used to build the former, i.e., ``msvcr140.dll`` for Visual Studio 2015 / 2017
+- The C-runtime of the Visual Studio version used to build the former ( ```msvcr140.dll```) for Visual Studio 2015 / 2017
 
 All native dependencies, built with [thread-safety enabled](https://support.hdfgroup.org/HDF5/faq/threadsafe.html),
 are included in the NuGet packages,
@@ -38,9 +38,9 @@ are included in the NuGet packages,
 
 ## The Library Resolution Process
 
-When you include HDF.PInvoke.NETStandard in your project via NuGet (```<PackageReference>``` in ```.csproj``` file), the native libraries are resolved automatially by the runtime. The dependencies are placed within the ```runtimes``` folder in a structure following [this](https://docs.microsoft.com/en-us/nuget/create-packages/supporting-multiple-target-frameworks#architecture-specific-folders) convention.
+When you include HDF.PInvoke.NETStandard in your project via NuGet (via the ```<PackageReference>``` element in the ```.csproj``` file), the native libraries are resolved automatially by the runtime. The dependencies are located within the ```runtimes``` folder in a structure following [this](https://docs.microsoft.com/en-us/nuget/create-packages/supporting-multiple-target-frameworks#architecture-specific-folders) convention.
 
-However, if you clone this repository, add a new project and create a ```<ProjectReference>``` to ```HDF.PInvoke.NETStandard.csproj```, there is no easy way yet to resolve depending native libraries (see [dotnet/sdk#765](https://github.com/dotnet/sdk/issues/765)). With the upcoming release of .NET Core 3.0, there will be some improvements, which enable the implementation of custom resolution logic for native libraries using the new ```NativeResolveEvent```.
+However, if you clone this repository and add a new project with a ```<ProjectReference>``` element pointing to ```HDF.PInvoke.NETStandard.csproj```, there is no easy way yet to resolve depending native libraries (see [dotnet/sdk#765](https://github.com/dotnet/sdk/issues/765)). With the upcoming release of .NET Core 3.0, there will be some improvements, which enable the implementation of custom resolution logic for native libraries using the new ```NativeResolveEvent```.
 
 In the meantime, the file ```Directory.Build.targets``` in this repository is responsible for copying the correct libraries to the project's output folder. When you are on Linux, the ```*.so``` files are copied. When you are on Windows and the ```<PlatformTarget>``` properties is not set to ```x86```, the 64-bit DLL's are copied. The targets file is automatically included in projects that are located within any subfolder and use the new ```.csproj``` format.
 
@@ -50,9 +50,9 @@ Before build, two things need to be prepared:
 
 1. Initialization of the [HDF.PInvoke](https://github.com/HDFGroup/HDF.PInvoke) submodule via
 ```git submodule update --init --recursive --quiet```
-2. Preparation of the ```runtimes``` folder, i.e. download of platform specific versions of the ```hdf5``` and ```hdf_hl``` files (see also: [Building the Native Libraries](#native)).
+2. Population the ```runtimes``` folder, i.e. download of platform specific versions of the ```hdf5``` and ```hdf_hl``` files (see also: [Building the Native Libraries](#native)).
 
-Since the second step consists of more than a single line of code, the it is simpler to call the [Powershell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-6) script: ```./init_solution.ps1```.
+Since the second step consists of more than a single line of code, it is recommended to call the [Powershell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-6) script, which does all the work for you: ```./init_solution.ps1```
 
 You can then build the actual library and NuGet package with:
 
@@ -60,7 +60,7 @@ You can then build the actual library and NuGet package with:
 dotnet build ./src/HDF.PInvoke.NETStandard/HDF.PInvoke.NETStandard.csproj -c Release
 ```
 
-The output written to the ```artifacts``` folder, where the ```bin```, ```obj``` and ```packages``` folders are located.
+The output is written to the ```artifacts``` folder, where the ```bin```, ```obj``` and ```packages``` folders are located.
 
 The unit tests can be executed with:
 
@@ -84,6 +84,7 @@ The native libraries are built using the [native-CI](https://github.com/HDFGroup
 | HDF5_ENABLE_SZIP_SUPPORT     | ON          | 
 | HDF5_ENABLE_SZIP_ENCODING    | ON          | 
 
+See [.appveyor.yml](https://github.com/HDFGroup/HDF.PInvoke.NETStandard/blob/native-CI/.appveyor.yml) for detailed build steps.
 
 ## License
 
