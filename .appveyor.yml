@@ -22,7 +22,7 @@ before_build:
   - ps: ./init_solution.ps1
 
 build_script:
-  - ps: dotnet build ./src/HDF.PInvoke.NETStandard/HDF.PInvoke.NETStandard.csproj -c $Env:CONFIGURATION
+  - ps: dotnet build ./src/HDF.PInvoke.1.10/HDF.PInvoke.1.10.csproj -c $Env:CONFIGURATION
 
 test_script:
 - ps: >-

@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		RELEASE_NOTES.md = RELEASE_NOTES.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HDF.PInvoke.NETStandard", "src\HDF.PInvoke.NETStandard\HDF.PInvoke.NETStandard.csproj", "{868D1096-5A9A-4524-AA72-1BD1A5B13160}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HDF.PInvoke.1.10", "src\HDF.PInvoke.1.10\HDF.PInvoke.1.10.csproj", "{868D1096-5A9A-4524-AA72-1BD1A5B13160}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "test\UnitTests\UnitTests.csproj", "{213F6B2E-3B56-4F5F-A14F-A0FC6F9AA855}"
 EndProject

@@ -10,7 +10,7 @@
     <PackageLicenseFile>COPYING</PackageLicenseFile>
     <PackageProjectUrl>https://www.hdfgroup.org/</PackageProjectUrl>
     <Product>HDF.PInvoke</Product>
-    <RepositoryUrl>https://github.com/HDFGroup/HDF.PInvoke.NETStandard</RepositoryUrl>
+    <RepositoryUrl>https://github.com/HDFGroup/HDF.PInvoke.1.10</RepositoryUrl>
     <Version>1.10.500</Version>
     <Prerelease>-preview1</Prerelease>
 

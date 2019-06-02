@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(Root)src/HDF.PInvoke.NETStandard/HDF.PInvoke.NETStandard.csproj" />
+    <ProjectReference Include="$(Root)src/HDF.PInvoke.1.10/HDF.PInvoke.1.10.csproj" />
   </ItemGroup>
 
 </Project>
