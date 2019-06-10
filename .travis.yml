@@ -16,10 +16,10 @@ before_install:
   - brew cask install powershell
 
 before_script:
-  - pwsh: "Get-ChildItem Env:"
+  - pwsh -command "Get-ChildItem Env:"
 
 script:
-  - pwsh: ./build/build.ps1
+  - pwsh -command "./build/build.ps1"
 
 deploy:
   provider: releases
