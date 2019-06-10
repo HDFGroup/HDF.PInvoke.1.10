@@ -29,8 +29,8 @@ dotnet add package HDF.PInvoke.1.10 -Version 1.10.500-preview1
 ## Prerequisites
 
 The ``HDF.PInvoke.dll`` managed assembly depends on the following native libraries:
-- HDF5 core API, ``hdf5.dll`` / ``libhdf5.so``
-- HDF5 high-level APIs, ``hdf5_hl.dll`` / ``libhdf5_hl.so``
+- HDF5 core API, ``hdf5.dll`` / ``libhdf5.so`` / ``libhdf5.dylib``
+- HDF5 high-level APIs, ``hdf5_hl.dll`` / ``libhdf5_hl.so`` / ``libhdf5_hl.dylib``
 - The C-runtime of the Visual Studio version used to build the former ( ```msvcr140.dll```) for Visual Studio 2015 / 2017
 
 All native dependencies, built with [thread-safety enabled](https://support.hdfgroup.org/HDF5/faq/threadsafe.html),
