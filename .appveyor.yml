@@ -16,8 +16,6 @@ matrix:
 
 branches:
   only:
-  - master
-  - dev
   - native-CI
 
 before_build:

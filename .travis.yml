@@ -8,9 +8,8 @@ matrix:
 
 branches:
   only:
-  - master
-  - dev
   - native-CI
+  - /^v.*$/
 
 before_install:
   - brew cask install powershell
