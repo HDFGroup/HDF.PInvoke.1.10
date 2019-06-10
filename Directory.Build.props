@@ -41,7 +41,7 @@
 
   <!-- Link all files under the runtimes folder for NuGet package. -->
   <ItemGroup>
-    <Content Include="$(Root)runtimes/**/*hdf5*.so;$(Root)runtimes/**/hdf5*.dll">
+    <Content Include="$(Root)runtimes/**/*hdf5*.so;$(Root)runtimes/**/*hdf5*.dylib;$(Root)runtimes/**/hdf5*.dll">
       <LinkBase>runtimes</LinkBase>
       <PackagePath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
     </Content>

@@ -138,13 +138,13 @@ namespace HDF.PInvoke
 
     internal class H5MacDllImporter : H5DLLImporter
     {
-        [DllImport("libdl.so")]
+        [DllImport("libdl.dylib")]
         protected static extern IntPtr dlopen(string filename, int flags);
 
-        [DllImport("libdl.so")]
+        [DllImport("libdl.dylib")]
         protected static extern IntPtr dlsym(IntPtr handle, string symbol);
 
-        [DllImport("libdl.so")]
+        [DllImport("libdl.dylib")]
         protected static extern IntPtr dlerror();
 
         private const int RTLD_NOW = 2;
