@@ -1,8 +1,9 @@
 ## HDF.PInvoke.NETStandard
 
-This project is based on [HDF.PInvoke for .NET Framework](https://github.com/HDFGroup/HDF.PInvoke) and aims to bring it to .NET Standard 2.0+. The first supported version is HDF5 [1.10.5](https://portal.hdfgroup.org/display/support/Downloads) for Windows (x86, x64) and Linux (x64). Support for OSX will be added in futures version when the CI provider ([AppVeyor](https://www.appveyor.com/)) supports building on OSX or using [Travis](https://travis-ci.org/) as an alternative.
+This project is based on [HDF.PInvoke for .NET Framework](https://github.com/HDFGroup/HDF.PInvoke) and aims to bring it to .NET Standard 2.0+. The first supported version is HDF5 [1.10.5](https://portal.hdfgroup.org/display/support/Downloads) for Windows (x86, x64), Linux (x64) and MacOS (x64).
 
-![AppVeyor Project status badge](https://ci.appveyor.com/api/projects/status/github/HDFGroup/HDF.PInvoke.NETStandard?branch=master&svg=true)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/HDFGroup/HDF.PInvoke.NETStandard?branch=master&svg=true)](https://ci.appveyor.com/project/gheber/hdf-pinvoke-netstandard)
+[![Travis CI](https://travis-ci.org/Apollo3zehn/HDF.PInvoke.NETStandard.svg?branch=master)](https://travis-ci.org/Apollo3zehn/HDF.PInvoke.NETStandard)
 [![NuGet](https://img.shields.io/nuget/vpre/HDF.PInvoke.NETStandard.svg?label=Nuget)](https://www.nuget.org/packages/HDF.PInvoke.NETStandard)
 [![Gitter](https://badges.gitter.im/HDFGroup/HDF.PInvoke.svg)](https://gitter.im/HDFGroup/HDF.PInvoke?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 <a href="https://groups.google.com/forum/#!forum/sharp-hdf5"><img src="https://groups.google.com/forum/my-groups-color.png" width="35" height="35"></a>
@@ -84,7 +85,7 @@ The native libraries are built using the [native-CI](https://github.com/HDFGroup
 | HDF5_ENABLE_SZIP_SUPPORT     | ON          | 
 | HDF5_ENABLE_SZIP_ENCODING    | ON          | 
 
-See [.appveyor.yml](https://github.com/HDFGroup/HDF.PInvoke.NETStandard/blob/native-CI/.appveyor.yml) for detailed build steps.
+See [.build.ps1](https://github.com/HDFGroup/HDF.PInvoke.NETStandard/blob/native-CI/build/build.ps1) for detailed build steps.
 
 ## License
 

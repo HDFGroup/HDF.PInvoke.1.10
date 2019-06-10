@@ -1,0 +1,34 @@
+git:
+  depth: 1
+
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode10.2
+
+branches:
+  only:
+  - master
+  - dev
+  - /^v.*$/
+
+language: csharp
+mono: none
+dotnet: 2.2.300
+
+env:
+  - CONFIGURATION="Release"
+
+before_install:
+  - brew cask install powershell
+
+before_script:
+  - dotnet --info
+  - pwsh -command "Get-ChildItem Env:"
+  - pwsh -command "./init_solution.ps1"
+
+script:
+  - dotnet build ./src/HDF.PInvoke.NETStandard/HDF.PInvoke.NETStandard.csproj -c ${CONFIGURATION}
+  - dotnet test ./test/NugetTest/NugetTest.csproj -c ${CONFIGURATION} /p:BuildProjectReferences=false
+  - dotnet test ./test/UnitTests/UnitTests.csproj -c ${CONFIGURATION} /p:BuildProjectReferences=false
+    --filter "FullyQualifiedName!=UnitTests.H5LTest.H5Lunpack_elink_valTest3&FullyQualifiedName!=UnitTests.H5SWMRTest.H5DOappendTestSWMR1&FullyQualifiedName!=UnitTests.H5SWMRTest.H5DOappendTestSWMR2"
