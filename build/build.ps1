@@ -13,8 +13,9 @@ $url = "https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/
 # download and extract source files
 Invoke-WebRequest -Uri $url -OutFile archive.$extension
 
-if     ($isLinux)   { tar xzf archive.$extension }
-elseif ($isWindows) { Expand-Archive -Path archive.$extension -DestinationPath . }
+if     ($IsLinux)   { tar xzf archive.$extension }
+if     ($IsMacOs)   { tar xzf archive.$extension }
+elseif ($IsWindows) { Expand-Archive -Path archive.$extension -DestinationPath . }
 
 # create build folder
 New-Item -Path ./$topFolderName/build -ItemType directory
