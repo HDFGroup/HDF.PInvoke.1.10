@@ -63,7 +63,7 @@ if ($IsLinux)
 if ($IsMacOs)
 {
     Set-Location -Path ./bin
-    zip -y ./../../../artifacts.zip ./*.so*
+    zip -y ./../../../artifacts.zip ./*.dylib*
 }
 elseif ($IsWindows)
 {
