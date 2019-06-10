@@ -1,0 +1,31 @@
+git:
+  depth: 1
+
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode10.2
+
+branches:
+  only:
+  - master
+  - dev
+  - native-CI
+
+before_install:
+  - brew cask install powershell
+
+before_script:
+  - pwsh: "Get-ChildItem Env:"
+
+script:
+  - pwsh: ./build/build.ps1
+
+deploy:
+  provider: releases
+  api_key:
+    secure: abQ8XzF+idx3PZTrm3ObNS94vz6E5s8EQ15B/YtL+mH8kFn3eBRGsbruviQWyk4LiSeUDGxl7qH2qeGbpLByU0uZSFMJR7KdSN1y9CnaSFZzgEpOMM1u85tEd8mXntSP7NL8dhp5neys4UJJb7ymPS4aAgUSKNOIp5ZazgXPrSErLeovoSkBOgUYROZQm3Ku8DV5UBNZrl0Qn/0fYqa6rNW4q5r3TZTOqz+wlMvDrC8YL1TDERjqYKv7fG8Px3yco10IlFcetBWMIpSSQfIqKXEYJN1LH09lFrMX+YImnfVkyGaOVFyH4a4iRIRaVJoeRqQSdrRt9kDMrTcsbbOxy0UGJqL9mGXYHB6zA4/B8ik4kdmLrRxp9GU8J84mo7zcg72lwupmjZcbrnMak7fq2TuK7eoDlqw4enguQJFQyqs/Pkd3LdktYjkonYkZ6WbDm5oYKvi562qakOlHvLFuIAu9wyHaxpSZEMTg6k1ok5RIA6N+wtyTcuC+8tK99puVWbmcIgPT4JJwBmruftmQdmfo4V6Ecg/FzEr6Thbf86f85OmJlt+x/zRXLqLc3gsqF4lCJUcHTVEqTwYRQGwftSwXQXUVRsxd8v+HKVD1zynjPyxkIpLXO3DNej5kidVRuoDPbGRC9HGRZxB14QrMVkHSOtyfPVVjjydVbv5TK34=
+  file: "artifacts.zip"
+  skip_cleanup: true
+  on:
+    tags: true
