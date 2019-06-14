@@ -85,7 +85,7 @@ The native libraries are built using the [native-CI](https://github.com/HDFGroup
 | HDF5_ENABLE_SZIP_SUPPORT     | ON          | 
 | HDF5_ENABLE_SZIP_ENCODING    | ON          | 
 
-See [.build.ps1](https://github.com/HDFGroup/HDF.PInvoke.NETStandard/blob/native-CI/build/build.ps1) for detailed build steps.
+See [build.ps1](https://github.com/HDFGroup/HDF.PInvoke.NETStandard/blob/native-CI/build/build.ps1) for detailed build steps.
 
 ## License
 
