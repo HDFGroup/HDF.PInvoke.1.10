@@ -1,4 +1,4 @@
-## HDF.PInvoke.NETStandard
+## HDF.PInvoke.1.10
 
 This project is based on [HDF.PInvoke for .NET Framework](https://github.com/HDFGroup/HDF.PInvoke) and aims to bring it to .NET Standard 2.0+. The first supported version is HDF5 [1.10.5](https://portal.hdfgroup.org/display/support/Downloads) for Windows (x86, x64), Linux (x64) and MacOS (x64).
 
@@ -10,7 +10,7 @@ This project is based on [HDF.PInvoke for .NET Framework](https://github.com/HDF
 
 ## What it is (not)
 
-HDF.PInvoke.NETStandard is a collection of [PInvoke](https://en.wikipedia.org/wiki/Platform_Invocation_Services)
+HDF.PInvoke.1.10 is a collection of [PInvoke](https://en.wikipedia.org/wiki/Platform_Invocation_Services)
 signatures for the [HDF5 C-API](https://www.hdfgroup.org/HDF5/doc/RM/RM_H5Front.html).
 It's practically *code-free*, which means we can blame all the bugs on Microsoft or [The HDF Group](https://www.hdfgroup.org/) :smile:
 
@@ -23,14 +23,14 @@ To install the latest version, run the following command in the
 [Package Manager Console](https://docs.nuget.org/docs/start-here/using-the-package-manager-console):
 
 ```
-dotnet add package HDF.PInvoke.NETStandard -Version 1.10.500-preview1
+dotnet add package HDF.PInvoke.1.10 -Version 1.10.500-preview1
 ```
 
 ## Prerequisites
 
 The ``HDF.PInvoke.dll`` managed assembly depends on the following native libraries:
-- HDF5 core API, ``hdf5.dll`` / ``libhdf5.so``
-- HDF5 high-level APIs, ``hdf5_hl.dll`` / ``libhdf5_hl.so``
+- HDF5 core API, ``hdf5.dll`` / ``libhdf5.so`` / ``libhdf5.dylib``
+- HDF5 high-level APIs, ``hdf5_hl.dll`` / ``libhdf5_hl.so`` / ``libhdf5_hl.dylib``
 - The C-runtime of the Visual Studio version used to build the former ( ```msvcr140.dll```) for Visual Studio 2015 / 2017
 
 All native dependencies, built with [thread-safety enabled](https://support.hdfgroup.org/HDF5/faq/threadsafe.html),
@@ -39,9 +39,9 @@ are included in the NuGet packages,
 
 ## The Library Resolution Process
 
-When you include HDF.PInvoke.NETStandard in your project via NuGet (via the ```<PackageReference>``` element in the ```.csproj``` file), the native libraries are resolved automatially by the runtime. The dependencies are located within the ```runtimes``` folder in a structure following [this](https://docs.microsoft.com/en-us/nuget/create-packages/supporting-multiple-target-frameworks#architecture-specific-folders) convention.
+When you include HDF.PInvoke.1.10 in your project via NuGet (via the ```<PackageReference>``` element in the ```.csproj``` file), the native libraries are resolved automatially by the runtime. The dependencies are located within the ```runtimes``` folder in a structure following [this](https://docs.microsoft.com/en-us/nuget/create-packages/supporting-multiple-target-frameworks#architecture-specific-folders) convention.
 
-However, if you clone this repository and add a new project with a ```<ProjectReference>``` element pointing to ```HDF.PInvoke.NETStandard.csproj```, there is no easy way yet to resolve depending native libraries (see [dotnet/sdk#765](https://github.com/dotnet/sdk/issues/765)). With the upcoming release of .NET Core 3.0, there will be some improvements, which enable the implementation of custom resolution logic for native libraries using the new ```NativeResolveEvent```.
+However, if you clone this repository and add a new project with a ```<ProjectReference>``` element pointing to ```HDF.PInvoke.1.10.csproj```, there is no easy way yet to resolve depending native libraries (see [dotnet/sdk#765](https://github.com/dotnet/sdk/issues/765)). With the upcoming release of .NET Core 3.0, there will be some improvements, which enable the implementation of custom resolution logic for native libraries using the new ```NativeResolveEvent```.
 
 In the meantime, the file ```Directory.Build.targets``` in this repository is responsible for copying the correct libraries to the project's output folder. When you are on Linux, the ```*.so``` files are copied. When you are on Windows and the ```<PlatformTarget>``` properties is not set to ```x86```, the 64-bit DLL's are copied. The targets file is automatically included in projects that are located within any subfolder and use the new ```.csproj``` format.
 
@@ -58,7 +58,7 @@ Since the second step consists of more than a single line of code, it is recomme
 You can then build the actual library and NuGet package with:
 
 ```
-dotnet build ./src/HDF.PInvoke.NETStandard/HDF.PInvoke.NETStandard.csproj -c Release
+dotnet build ./src/HDF.PInvoke.1.10/HDF.PInvoke.1.10.csproj -c Release
 ```
 
 The output is written to the ```artifacts``` folder, where the ```bin```, ```obj``` and ```packages``` folders are located.
@@ -71,7 +71,7 @@ dotnet test ./test/UnitTests/UnitTests.csproj
 
 ## <a name="native"></a>Building the Native Libraries
 
-The native libraries are built using the [native-CI](https://github.com/HDFGroup/HDF.PInvoke.NETStandard/tree/native-CI) branch. Each build produces a ```.zip``` file containig the platform specific files. The following settings are used for building:
+The native libraries are built using the [native-CI](https://github.com/HDFGroup/HDF.PInvoke.1.10/tree/native-CI) branch. Each build produces a ```.zip``` file containig the platform specific files. The following settings are used for building:
 
 | Option                       | Value       |
 | ---------------------------- | ----------- |
@@ -85,7 +85,7 @@ The native libraries are built using the [native-CI](https://github.com/HDFGroup
 | HDF5_ENABLE_SZIP_SUPPORT     | ON          | 
 | HDF5_ENABLE_SZIP_ENCODING    | ON          | 
 
-See [.build.ps1](https://github.com/HDFGroup/HDF.PInvoke.NETStandard/blob/native-CI/build/build.ps1) for detailed build steps.
+See [build.ps1](https://github.com/HDFGroup/HDF.PInvoke.NETStandard/blob/native-CI/build/build.ps1) for detailed build steps.
 
 ## License
 
@@ -93,7 +93,7 @@ HDF.PInvoke is part of [HDF5](https://www.hdfgroup.org/HDF5/). It is subject to 
 
 ## Supporting HDF.PInvoke(.NETStandard)
 
-The best way to support HDF.PInvoke.NETStandard is to contribute to it either by reporting
+The best way to support HDF.PInvoke.1.10 is to contribute to it either by reporting
 bugs, writing documentation (e.g., the [cookbook](https://github.com/HDFGroup/HDF.PInvoke/wiki/Cookbook)),
 or sending pull requests.
 
