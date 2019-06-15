@@ -18,7 +18,7 @@ function Expand-WebArchiveWindows([string]$uri, [string]$runtime)
 git submodule update --init --recursive --quiet
 
 $linuxUrl       = "https://ci.appveyor.com/api/buildjobs/wsrah2ibo2ekkib3/artifacts/artifacts.zip"
-$macOSUrl       = "https://github.com/Apollo3zehn/HDF.PInvoke.NETStandard/releases/download/v1.10.500-preview1-native/artifacts.zip"
+$macOSUrl       = "https://github.com/Apollo3zehn/HDF.PInvoke.1.10/releases/download/v1.10.500-preview1-native/artifacts.zip"
 $windowsUrl_x64 = "https://ci.appveyor.com/api/buildjobs/2r8y9a31d1wnyaj9/artifacts/artifacts.zip"
 $windowsUrl_x86 = "https://ci.appveyor.com/api/buildjobs/pkkkikt92htefba0/artifacts/artifacts.zip"
 

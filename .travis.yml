@@ -28,7 +28,7 @@ before_script:
   - pwsh -command "./init_solution.ps1"
 
 script:
-  - dotnet build ./src/HDF.PInvoke.NETStandard/HDF.PInvoke.NETStandard.csproj -c ${CONFIGURATION}
+  - dotnet build ./src/HDF.PInvoke.1.10/HDF.PInvoke.1.10.csproj -c ${CONFIGURATION}
   - dotnet test ./test/NugetTest/NugetTest.csproj -c ${CONFIGURATION} /p:BuildProjectReferences=false
   - dotnet test ./test/UnitTests/UnitTests.csproj -c ${CONFIGURATION} /p:BuildProjectReferences=false
     --filter "FullyQualifiedName!=UnitTests.H5LTest.H5Lunpack_elink_valTest3&FullyQualifiedName!=UnitTests.H5SWMRTest.H5DOappendTestSWMR1&FullyQualifiedName!=UnitTests.H5SWMRTest.H5DOappendTestSWMR2"
