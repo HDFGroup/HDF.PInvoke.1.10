@@ -6,7 +6,7 @@
     <!-- NuGet and AssemblyInfo properties -->
     <Authors>The HDF Group</Authors>
     <Copyright>Copyright © 2019</Copyright>
-    <Description>This package contains .NET Standard compatible P/Invoke declarations for the unmanaged HDF5 1.10.x C-API (tested on Windows, Linux and MacOS). For documenation, see the HDF5 support page at https://portal.hdfgroup.org/display/HDF5/HDF5.</Description>
+    <Description>This package contains .NET Standard compatible P/Invoke declarations for the unmanaged HDF5 1.10.x C-API (tested on Windows, Linux and MacOS). For documentation, see the HDF5 support page at https://portal.hdfgroup.org/display/HDF5/HDF5.</Description>
     <PackageIconUrl>https://raw.githubusercontent.com/HDFGroup/HDF.PInvoke/master/images/hdf.png</PackageIconUrl>
     <PackageLicenseFile>COPYING</PackageLicenseFile>
     <PackageProjectUrl>https://www.hdfgroup.org/</PackageProjectUrl>
