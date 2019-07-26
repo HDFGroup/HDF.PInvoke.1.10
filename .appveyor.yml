@@ -17,6 +17,7 @@ matrix:
 branches:
   only:
   - native-CI
+  - /^v.*$/
 
 before_build:
   - ps: "Get-ChildItem Env:"
@@ -25,4 +26,13 @@ build_script:
   - ps: ./build/build.ps1
    
 artifacts:
-  - path: "artifacts.zip"
+  - path: "*.zip"
+
+deploy:
+  - provider: GitHub
+    force_update: true
+    auth_token:
+      secure: DgOFw4fxC/ZRHeKG+iMYmTCIhHbtCO65+MUqsDwBuBNrfYMub9LNo+Zaj1sB54tN
+    artifact: /.*\.zip/
+    on:
+      APPVEYOR_REPO_TAG: true

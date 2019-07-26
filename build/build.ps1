@@ -55,18 +55,21 @@ elseif ($IsWindows -And $env:PLATFORM -eq "x86") { Invoke-Expression "cmake -G '
 cmake --build . --config Release
 
 # collect artifacts
-if ($IsLinux)
+if ($IsLinux) # AppVeyor
 {
     Set-Location -Path ./bin
-    zip -y ./../../../artifacts.zip ./*.so*
+    zip -y "./../../../Linux_$($env:PLATFORM).zip" ./*.so*
 }
-if ($IsMacOs)
+if ($IsMacOs) # Travis
 {
     Set-Location -Path ./bin
-    zip -y ./../../../artifacts.zip ./*.dylib*
+    zip -y "./../../../MacOS_x64.zip" ./*.dylib*
 }
-elseif ($IsWindows)
+elseif ($IsWindows) # AppVeyor
 {
     Set-Location -Path ./bin/release
-    Compress-Archive -Path ./*.dll -DestinationPath ./../../../../artifacts.zip
+    Compress-Archive -Path ./*.dll -DestinationPath "./../../../../Windows_$($env:PLATFORM).zip"
 }
+
+# remove unnecessary source archive (to avoid unintentional deployment)
+Remove-Item –Path archive.$extension
