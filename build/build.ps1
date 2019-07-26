@@ -17,6 +17,9 @@ if     ($IsLinux)   { tar xzf archive.$extension }
 if     ($IsMacOs)   { tar xzf archive.$extension }
 elseif ($IsWindows) { Expand-Archive -Path archive.$extension -DestinationPath . }
 
+# remove unnecessary source archive (to avoid unintentional deployment)
+Remove-Item –Path archive.$extension
+
 # create build folder
 New-Item -Path ./$topFolderName/build -ItemType directory
 Set-Location -Path ./$topFolderName/build
@@ -70,6 +73,3 @@ elseif ($IsWindows) # AppVeyor
     Set-Location -Path ./bin/release
     Compress-Archive -Path ./*.dll -DestinationPath "./../../../../Windows_$($env:PLATFORM).zip"
 }
-
-# remove unnecessary source archive (to avoid unintentional deployment)
-Remove-Item –Path archive.$extension
