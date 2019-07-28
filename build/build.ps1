@@ -49,8 +49,8 @@ $params = @"
 "@.replace("`n"," ")
 
 # create build files
-if     ($IsLinux)   { Invoke-Expression "cmake -G 'Unix Makefiles' $params ./../$sourceFolderName" }
-if     ($IsMacOs)   { Invoke-Expression "cmake -G 'Unix Makefiles' $params ./../$sourceFolderName" }
+if     ($IsLinux)                                { Invoke-Expression "cmake -G 'Unix Makefiles'              $params ./../$sourceFolderName" }
+elseif ($IsMacOs)                                { Invoke-Expression "cmake -G 'Unix Makefiles'              $params ./../$sourceFolderName" }
 elseif ($IsWindows -And $env:PLATFORM -eq "x64") { Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../$sourceFolderName" }
 elseif ($IsWindows -And $env:PLATFORM -eq "x86") { Invoke-Expression "cmake -G 'Visual Studio 15 2017'       $params ./../$sourceFolderName" }
 
