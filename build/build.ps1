@@ -61,15 +61,15 @@ cmake --build . --config Release
 if ($IsLinux) # AppVeyor
 {
     Set-Location -Path ./bin
-    zip -y "./../../../Linux_$($env:PLATFORM).zip" './*.so*'
+    zip -y "./../../../Linux_$($env:PLATFORM).zip" ./*.so*
 }
 if ($IsMacOs) # Travis
 {
     Set-Location -Path ./bin
-    zip -y './../../../MacOS_x64.zip' './*.dylib*'
+    zip -y './../../../MacOS_x64.zip' ./*.dylib*
 }
 elseif ($IsWindows) # AppVeyor
 {
     Set-Location -Path ./bin/release
-    Compress-Archive -Path './*.dll' -DestinationPath "./../../../../Windows_$($env:PLATFORM).zip"
+    Compress-Archive -Path ./*.dll -DestinationPath "./../../../../Windows_$($env:PLATFORM).zip"
 }
