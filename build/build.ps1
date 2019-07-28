@@ -25,7 +25,7 @@ New-Item -Path "./$topFolderName/build" -ItemType directory
 Set-Location -Path "./$topFolderName/build"
 
 # define CMAKE options
-$params = @"
+$params = @'
 -DCMAKE_BUILD_TYPE:STRING=Release
 -DBUILD_SHARED_LIBS:BOOL=ON
 -DBUILD_TESTING:BOOL=OFF
@@ -46,7 +46,7 @@ $params = @"
 -DZLIB_TGZ_NAME:STRING=ZLib.tar.gz
 -DSZIP_TGZ_NAME:STRING=SZip.tar.gz
 -DTGZPATH:PATH=$((Get-Location).Path)/..
-"@.replace('`n',' ')
+'@.replace("`n",' ')
 
 # create build files
 if     ($IsLinux)                                { Invoke-Expression "cmake -G 'Unix Makefiles'              $params ./../$sourceFolderName" }
