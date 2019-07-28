@@ -1,12 +1,12 @@
 # define parameters
-$version1 = "1.10.5"
-$version2 = "1_10_5"
+$version1 = '1.10.5'
+$version2 = '1_10_5'
 $topFolderName = "CMake-hdf5-$version1"
 $sourceFolderName = "hdf5-$version1"
 
-if     ($IsLinux)   { $extension = "tar.gz" }
-elseif ($IsMacOs)   { $extension = "tar.gz" }
-elseif ($IsWindows) { $extension = "zip" }
+if     ($IsLinux)   { $extension = 'tar.gz' }
+elseif ($IsMacOs)   { $extension = 'tar.gz' }
+elseif ($IsWindows) { $extension = 'zip' }
 
 $url = "https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_$version2/source/CMake-hdf5-$version1.$extension"
 
@@ -18,14 +18,14 @@ if     ($IsMacOs)   { tar xzf archive.$extension }
 elseif ($IsWindows) { Expand-Archive -Path archive.$extension -DestinationPath . }
 
 # remove unnecessary source archive (to avoid unintentional deployment)
-Remove-Item –Path archive.$extension
+Remove-Item -Path "archive.$extension"
 
 # create build folder
-New-Item -Path ./$topFolderName/build -ItemType directory
-Set-Location -Path ./$topFolderName/build
+New-Item -Path "./$topFolderName/build" -ItemType directory
+Set-Location -Path "./$topFolderName/build"
 
 # define CMAKE options
-$params = @"
+$params = @'
 -DCMAKE_BUILD_TYPE:STRING=Release
 -DBUILD_SHARED_LIBS:BOOL=ON
 -DBUILD_TESTING:BOOL=OFF
@@ -46,13 +46,13 @@ $params = @"
 -DZLIB_TGZ_NAME:STRING=ZLib.tar.gz
 -DSZIP_TGZ_NAME:STRING=SZip.tar.gz
 -DTGZPATH:PATH=$((Get-Location).Path)/..
-"@.replace("`n"," ")
+'@.replace("`n",' ')
 
 # create build files
-if     ($IsLinux)   { Invoke-Expression "cmake -G 'Unix Makefiles' $params ./../$sourceFolderName" }
-if     ($IsMacOs)   { Invoke-Expression "cmake -G 'Unix Makefiles' $params ./../$sourceFolderName" }
-elseif ($IsWindows -And $env:PLATFORM -eq "x64") { Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../$sourceFolderName" }
-elseif ($IsWindows -And $env:PLATFORM -eq "x86") { Invoke-Expression "cmake -G 'Visual Studio 15 2017'       $params ./../$sourceFolderName" }
+if     ($IsLinux)                                { Invoke-Expression "cmake -G 'Unix Makefiles'              $params ./../$sourceFolderName" }
+elseif ($IsMacOs)                                { Invoke-Expression "cmake -G 'Unix Makefiles'              $params ./../$sourceFolderName" }
+elseif ($IsWindows -And $env:PLATFORM -eq 'x64') { Invoke-Expression "cmake -G 'Visual Studio 15 2017 Win64' $params ./../$sourceFolderName" }
+elseif ($IsWindows -And $env:PLATFORM -eq 'x86') { Invoke-Expression "cmake -G 'Visual Studio 15 2017'       $params ./../$sourceFolderName" }
 
 # build
 cmake --build . --config Release
@@ -66,7 +66,7 @@ if ($IsLinux) # AppVeyor
 if ($IsMacOs) # Travis
 {
     Set-Location -Path ./bin
-    zip -y "./../../../MacOS_x64.zip" ./*.dylib*
+    zip -y './../../../MacOS_x64.zip' ./*.dylib*
 }
 elseif ($IsWindows) # AppVeyor
 {
