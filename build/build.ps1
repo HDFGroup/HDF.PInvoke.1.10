@@ -18,7 +18,7 @@ if     ($IsMacOs)   { tar xzf archive.$extension }
 elseif ($IsWindows) { Expand-Archive -Path archive.$extension -DestinationPath . }
 
 # remove unnecessary source archive (to avoid unintentional deployment)
-Remove-Item –Path "archive.$extension"
+Remove-Item -Path "archive.$extension"
 
 # create build folder
 New-Item -Path "./$topFolderName/build" -ItemType directory
@@ -61,15 +61,15 @@ cmake --build . --config Release
 if ($IsLinux) # AppVeyor
 {
     Set-Location -Path ./bin
-    zip -y ./../../../Linux_$($env:PLATFORM).zip ./*.so*
+    zip -y "./../../../Linux_$($env:PLATFORM).zip" './*.so*'
 }
 if ($IsMacOs) # Travis
 {
     Set-Location -Path ./bin
-    zip -y ./../../../MacOS_x64.zip ./*.dylib*
+    zip -y './../../../MacOS_x64.zip' './*.dylib*'
 }
 elseif ($IsWindows) # AppVeyor
 {
     Set-Location -Path ./bin/release
-    Compress-Archive -Path ./*.dll -DestinationPath ./../../../../Windows_$($env:PLATFORM).zip
+    Compress-Archive -Path './*.dll' -DestinationPath "./../../../../Windows_$($env:PLATFORM).zip"
 }
