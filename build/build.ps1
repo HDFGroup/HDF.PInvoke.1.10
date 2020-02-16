@@ -1,6 +1,6 @@
 # define parameters
-$version1 = '1.10.5'
-$version2 = '1_10_5'
+$version1 = '1.10.6'
+$version2 = '1_10_6'
 $topFolderName = "CMake-hdf5-$version1"
 $sourceFolderName = "hdf5-$version1"
 
