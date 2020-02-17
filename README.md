@@ -23,7 +23,7 @@ To install the latest version, run the following command in the
 [Package Manager Console](https://docs.nuget.org/docs/start-here/using-the-package-manager-console):
 
 ```
-dotnet add package HDF.PInvoke.1.10 -Version 1.10.500-preview1
+dotnet add package HDF.PInvoke.1.10
 ```
 
 ## Prerequisites
@@ -85,7 +85,7 @@ The native libraries are built using the [native-CI](https://github.com/HDFGroup
 | HDF5_ENABLE_SZIP_SUPPORT     | ON          | 
 | HDF5_ENABLE_SZIP_ENCODING    | ON          | 
 
-See [build.ps1](https://github.com/HDFGroup/HDF.PInvoke.1.101.10/blob/native-CI/build/build.ps1) for detailed build steps.
+See [build.ps1](https://github.com/HDFGroup/HDF.PInvoke.1.10/blob/native-CI/build/build.ps1) for detailed build steps.
 
 ## License
 
