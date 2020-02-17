@@ -17,10 +17,10 @@ function Expand-WebArchiveWindows([string]$uri, [string]$runtime)
 
 git submodule update --init --recursive --quiet
 
-$linuxUrl       = "https://github.com/HDFGroup/HDF.PInvoke.1.10/releases/download/v1.10.500-native/Linux_x64.zip"
-$macOSUrl       = "https://github.com/HDFGroup/HDF.PInvoke.1.10/releases/download/v1.10.500-native/MacOS_x64.zip"
-$windowsUrl_x64 = "https://github.com/HDFGroup/HDF.PInvoke.1.10/releases/download/v1.10.500-native/Windows_x64.zip"
-$windowsUrl_x86 = "https://github.com/HDFGroup/HDF.PInvoke.1.10/releases/download/v1.10.500-native/Windows_x86.zip"
+$linuxUrl       = "https://github.com/HDFGroup/HDF.PInvoke.1.10/releases/download/v1.10.600-native/Linux_x64.zip"
+$macOSUrl       = "https://github.com/HDFGroup/HDF.PInvoke.1.10/releases/download/v1.10.600-native/MacOS_x64.zip"
+$windowsUrl_x64 = "https://github.com/HDFGroup/HDF.PInvoke.1.10/releases/download/v1.10.600-native/Windows_x64.zip"
+$windowsUrl_x86 = "https://github.com/HDFGroup/HDF.PInvoke.1.10/releases/download/v1.10.600-native/Windows_x86.zip"
 
 if ($IsLinux -Or $IsMacOs)
 {
