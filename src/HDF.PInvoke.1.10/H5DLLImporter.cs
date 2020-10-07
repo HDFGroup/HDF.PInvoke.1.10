@@ -191,6 +191,8 @@ namespace HDF.PInvoke
             if (!File.Exists(filePath))
                 throw new FileNotFoundException(filePath);
 
+            throw new Exception(filePath);
+
             _handle = dlopen(filePath, RTLD_NOW);
 
             if (_handle == IntPtr.Zero)
