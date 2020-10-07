@@ -111,7 +111,7 @@ namespace HDF.PInvoke
         {
             var fileName = $"lib{libName}.so";
             var filePath = File
-                .ReadAllText("/proc/self/map")
+                .ReadAllText("/proc/self/maps")
                 .Split('\n')
                 .Where(line => line.Contains(fileName))
                 .FirstOrDefault();
