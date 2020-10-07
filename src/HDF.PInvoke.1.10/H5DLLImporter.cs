@@ -178,9 +178,6 @@ namespace HDF.PInvoke
 
             process.Start();
 
-            var a = process.StandardOutput.ReadToEnd();
-            throw new Exception(a);
-
             var filePath = process.StandardOutput.ReadToEnd()
                 .Split('\n')
                 .Where(line => line.Contains(fileName))
