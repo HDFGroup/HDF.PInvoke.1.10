@@ -188,8 +188,6 @@ namespace HDF.PInvoke
             if (filePath == null)
                 throw new FileNotFoundException(fileName);
 
-            throw new Exception(filePath.Substring(0, filePath.Length - 70));
-
             if (!File.Exists(filePath))
                 throw new FileNotFoundException(filePath);
 
