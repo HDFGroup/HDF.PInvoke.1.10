@@ -14,6 +14,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -161,19 +162,33 @@ namespace HDF.PInvoke
         // However, to get the lib handle for the symbols, we need to "reopen" it using the correct path.
         public H5MacDllImporter(string libName)
         {
-            string filePath;
-
             var fileName = $"lib{libName}.dylib";
-            var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var localPath = Path.Combine(basePath, fileName);
-            var packagePath = Path.Combine(basePath, "..", "..", "runtimes", "osx-x64", "native", fileName);
 
-            if (File.Exists(localPath))
-                filePath = localPath;
-            else if (File.Exists(packagePath))
-                filePath = packagePath;
-            else
-                throw new FileNotFoundException(libName);
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "vmmap",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                }
+            };
+
+            process.Start();
+
+            var filePath = process.StandardOutput.ReadToEnd()
+                .Split('\n')
+                .Where(line => line.Contains(fileName))
+                .FirstOrDefault()?
+                .Split(' ')
+                .LastOrDefault();
+
+            if (filePath == null)
+                throw new FileNotFoundException(fileName);
+
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException(filePath);
 
             _handle = dlopen(filePath, RTLD_NOW);
 
