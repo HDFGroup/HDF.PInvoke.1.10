@@ -117,10 +117,11 @@ namespace HDF.PInvoke
                 .Where(line => line.Contains(fileName))
                 .FirstOrDefault();
 
-            if (filePath == null || !File.Exists(filePath))
+            if (filePath == null)
                 throw new FileNotFoundException(fileName);
 
-            throw new Exception(filePath);
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException(filePath);
 
             _handle = dlopen(filePath, RTLD_NOW);
 
