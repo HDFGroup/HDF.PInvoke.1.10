@@ -111,11 +111,6 @@ namespace HDF.PInvoke
         {
             var fileName = $"lib{libName}.so";
 
-            var filePath2 = File
-                .ReadAllText("/proc/self/maps");
-
-            throw new Exception(filePath2);
-
             var filePath = File
                 .ReadAllText("/proc/self/maps")
                 .Split('\n')
@@ -124,6 +119,8 @@ namespace HDF.PInvoke
 
             if (filePath == null || !File.Exists(filePath))
                 throw new FileNotFoundException(fileName);
+
+            throw new Exception(filePath);
 
             _handle = dlopen(filePath, RTLD_NOW);
 
