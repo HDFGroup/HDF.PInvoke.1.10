@@ -169,6 +169,7 @@ namespace HDF.PInvoke
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "vmmap",
+                    Arguments = Process.GetCurrentProcess().Id.ToString(),
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
