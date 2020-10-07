@@ -115,7 +115,9 @@ namespace HDF.PInvoke
                 .ReadAllText("/proc/self/maps")
                 .Split('\n')
                 .Where(line => line.Contains(fileName))
-                .FirstOrDefault();
+                .FirstOrDefault()?
+                .Split(' ')
+                .LastOrDefault();
 
             if (filePath == null)
                 throw new FileNotFoundException(fileName);
