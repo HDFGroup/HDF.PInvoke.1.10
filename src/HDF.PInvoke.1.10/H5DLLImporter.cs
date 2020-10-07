@@ -110,6 +110,12 @@ namespace HDF.PInvoke
         public H5LinuxDllImporter(string libName)
         {
             var fileName = $"lib{libName}.so";
+
+            var filePath2 = File
+                .ReadAllText("/proc/self/maps");
+
+            throw new Exception(filePath2);
+
             var filePath = File
                 .ReadAllText("/proc/self/maps")
                 .Split('\n')
