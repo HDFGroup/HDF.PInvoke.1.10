@@ -5,7 +5,7 @@
        package. -->
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <ImportDirectoryBuildTargets>false</ImportDirectoryBuildTargets>
   </PropertyGroup>
 
