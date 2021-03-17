@@ -48,4 +48,11 @@
     </Content>
   </ItemGroup>
   
+  <!-- Add build target file in NuGet package for .NET Framework packages.config support. -->
+  <ItemGroup>
+    <Content Include="HDF.PInvoke.1.10.targets">
+      <PackagePath>build/net461;buildTransitive/net461</PackagePath>
+    </Content>
+  </ItemGroup>
+
 </Project>

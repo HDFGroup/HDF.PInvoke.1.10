@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" InitialTargets="CopyNativeFilesToOutput">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -20,5 +20,43 @@
   <ItemGroup>
     <ProjectReference Include="$(Root)src/HDF.PInvoke.1.10/HDF.PInvoke.1.10.csproj" />
   </ItemGroup>
+
+  <!-- Copy files depending on the architecture. -->
+  <Target Name="CopyNativeFilesToOutput">
+    <PropertyGroup>
+      <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'True'">True</IsWindows>
+      <IsLinux   Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'   == 'True'">True</IsLinux>
+      <IsMacOS   Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))'     == 'True'">True</IsMacOS>
+      <Is64BitProcess Condition="$(PlatformTarget) == 'x64' OR ('$(PlatformTarget)' == 'AnyCPU' And '$(Prefer32Bit)' != 'True')">True</Is64BitProcess>
+    </PropertyGroup>
+
+    <!-- Linux (x64) -->
+    <ItemGroup Condition="$(IsLinux) == 'True' AND $(Is64BitProcess) == 'True'">
+      <None Include="$(Root)runtimes/linux-x64/**/*hdf5*.so">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <!-- MacOs (x64) -->
+    <ItemGroup Condition="$(IsMacOS) == 'True' AND $(Is64BitProcess) == 'True'">
+      <None Include="$(Root)runtimes/osx-x64/**/*hdf5.dylib">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <!-- Windows (x64) -->
+    <ItemGroup Condition="$(IsWindows) == 'True' AND $(Is64BitProcess) == 'True'">
+      <None Include="$(Root)runtimes/win-x64/**/hdf5*.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <!-- Windows (x86) -->
+    <ItemGroup Condition="$(IsWindows) == 'True' AND $(Is64BitProcess) == ''">
+      <None Include="$(Root)runtimes/win-x86/**/hdf5*.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+  </Target>
 
 </Project>

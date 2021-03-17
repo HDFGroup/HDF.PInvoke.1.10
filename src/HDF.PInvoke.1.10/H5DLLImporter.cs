@@ -14,6 +14,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -36,8 +37,31 @@ namespace HDF.PInvoke
 
         static H5DLLImporter()
         {
-            if (H5.open() < 0)
-                throw new Exception("Could not initialize HDF5 library.");
+            // .NET Framework does not automatically load libraries from the native runtimes folder like .NET Core.
+            // Therefore, if running .NET Framework, switch the current directory to the native runtime folder
+            // before attempting to load the native HDF5 library.
+            bool changedCurrentDir = false;
+            var prevCurrentDir = Directory.GetCurrentDirectory();
+            if (RuntimeInformation.FrameworkDescription.Contains("Framework"))
+            {
+                var dllDir = Path.Combine(prevCurrentDir, string.Format(Constants.WindowsDLLPath, Environment.Is64BitProcess ? "64" : "86"));
+                if (Directory.Exists(dllDir))
+                {
+                    Directory.SetCurrentDirectory(dllDir);
+                    changedCurrentDir = true;
+                }
+            }
+          
+            try
+            {
+                if (H5.open() < 0)
+                    throw new Exception("Could not initialize HDF5 library.");
+            }
+            finally
+            {
+                if (changedCurrentDir)
+                    Directory.SetCurrentDirectory(prevCurrentDir);
+            }
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 Instance = new H5LinuxDllImporter(Constants.DLLFileName);
