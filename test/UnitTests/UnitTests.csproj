@@ -27,7 +27,7 @@
       <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'True'">True</IsWindows>
       <IsLinux   Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'   == 'True'">True</IsLinux>
       <IsMacOS   Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))'     == 'True'">True</IsMacOS>
-      <Is64BitProcess Condition="$(PlatformTarget) == 'x64' OR ('$(PlatformTarget)' == 'AnyCPU' And '$(Prefer32Bit)' != 'True')">True</Is64BitProcess>
+      <Is64BitProcess Condition="'$(PlatformTarget)' == 'x64' OR ('$(PlatformTarget)' == 'AnyCPU' And '$(Prefer32Bit)' != 'True')">True</Is64BitProcess>
     </PropertyGroup>
 
     <!-- Linux (x64) -->
