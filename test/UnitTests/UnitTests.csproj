@@ -31,28 +31,28 @@
     </PropertyGroup>
 
     <!-- Linux (x64) -->
-    <ItemGroup Condition="$(IsLinux) == 'True' AND $(Is64BitProcess) == 'True'">
+    <ItemGroup Condition="'$(IsLinux)' == 'True' AND '$(Is64BitProcess)' == 'True'">
       <None Include="$(Root)runtimes/linux-x64/**/*hdf5*.so">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 
     <!-- MacOs (x64) -->
-    <ItemGroup Condition="$(IsMacOS) == 'True' AND $(Is64BitProcess) == 'True'">
+    <ItemGroup Condition="'$(IsMacOS)' == 'True' AND '$(Is64BitProcess)' == 'True'">
       <None Include="$(Root)runtimes/osx-x64/**/*hdf5.dylib">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 
     <!-- Windows (x64) -->
-    <ItemGroup Condition="$(IsWindows) == 'True' AND $(Is64BitProcess) == 'True'">
+    <ItemGroup Condition="'$(IsWindows)' == 'True' AND '$(Is64BitProcess)' == 'True'">
       <None Include="$(Root)runtimes/win-x64/**/hdf5*.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 
     <!-- Windows (x86) -->
-    <ItemGroup Condition="$(IsWindows) == 'True' AND $(Is64BitProcess) == ''">
+    <ItemGroup Condition="'$(IsWindows)' == 'True' AND '$(Is64BitProcess)' == ''">
       <None Include="$(Root)runtimes/win-x86/**/hdf5*.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
