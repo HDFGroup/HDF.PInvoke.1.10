@@ -1,18 +1,9 @@
 <Project>
 
-  <!-- Based on https://github.com/dotnet/sdk/issues/1545 and https://github.com/NuGet/Home/issues/6645#issuecomment-383639802 -->
-  <!-- Alternative workaround: Add <PackageReference Include="Microsoft.NETCore.Platforms" Version="5.0.0" /> -->
-
-  <PropertyGroup Condition="'$(MSBuildRuntimeType)' == 'Full'">
-      <Is32BitArch Condition="'$(MSBuildProgramFiles32)' == ''">True</Is32BitArch>
-      <Is64BitArch Condition="'$(MSBuildProgramFiles32)' != ''">True</Is64BitArch>
-  </PropertyGroup>
-
   <!-- .targets file for .NET Framework -->
   <!-- Copy files depending on the architecture. -->
   <Target Name="CopyNativeFilesToOutput" BeforeTargets="BeforeBuild">
-    <PropertyGroup Condition="'$(MSBuildRuntimeType)' == 'Full' AND
-                              '$(UsingMicrosoftNETSdk)' == 'True' AND
+    <PropertyGroup Condition="'$(UsingMicrosoftNETSdk)' == 'True' AND
                               '$(_UsingDefaultPlatformTarget)' == 'True' AND
                               ($(RuntimeIdentifier.EndsWith('-x86')) or $(RuntimeIdentifier.Contains('-x86-'))) AND
                               '$(Prefer32Bit)' == 'False'">
@@ -20,38 +11,37 @@
       <Prefer32BitToFixDotnetBug>True</Prefer32BitToFixDotnetBug>
     </PropertyGroup>
     <Message Condition="'$(Prefer32BitToFixDotnetBug)' == 'True'" Importance="high" Text="HDF.PInvoke.1.10.targets: Build property `Prefer32Bit` set to `True` to mitigate https://github.com/dotnet/sdk/issues/1545"/>
-  
+
+    <!-- Place native runtimes in the appropriate platform folder for AnyCPU (64-bit preferred) builds. -->
+    <!-- Else, place the runtimes directly in the build output. -->
+    <PropertyGroup Condition="'$(PlatformTarget)' == 'AnyCPU' AND '$(Prefer32Bit)' != 'True'">
+      <HDFRuntimeDir_x86>runtimes\win-x86\native\</HDFRuntimeDir_x86>
+      <HDFRuntimeDir_x64>runtimes\win-x64\native\</HDFRuntimeDir_x64>
+    </PropertyGroup>
+    
     <!-- x86 -->
-    <ItemGroup Condition="'$(MSBuildRuntimeType)' == 'Full' AND 
-                          (
-                            ('$(PlatformTarget)' == 'AnyCPU' AND '$(Is32BitArch)' == 'True') OR 
-                            ('$(PlatformTarget)' == 'AnyCPU' AND '$(Is64BitArch)' == 'True' AND '$(Prefer32Bit)' == 'True') OR
-                            '$(PlatformTarget)' == 'x86'
-                          )">
+    <ItemGroup Condition="'$(PlatformTarget)' == 'AnyCPU' OR ('$(UsingMicrosoftNETSdk)' != 'True' AND '$(PlatformTarget)' == 'x86')">
       <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x86\**\hdf5.dll">
-        <Link>hdf5.dll</Link>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <Link>$(HDFRuntimeDir_x86)hdf5.dll</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x86\**\hdf5_hl.dll">
-        <Link>hdf5_hl.dll</Link>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <Link>$(HDFRuntimeDir_x86)hdf5_hl.dll</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
     
     <!-- x64 -->
-    <ItemGroup Condition="'$(MSBuildRuntimeType)' == 'Full' AND 
-                          (
-                            ('$(PlatformTarget)' == 'AnyCPU' AND '$(Is64BitArch)' == 'True' AND '$(Prefer32Bit)' != 'True') OR 
-                            '$(PlatformTarget)' == 'x64'
-                          )">
+    <ItemGroup Condition="('$(PlatformTarget)' == 'AnyCPU' AND '$(Prefer32Bit)' != 'True') OR ('$(UsingMicrosoftNETSdk)' != 'True' AND '$(PlatformTarget)' == 'x64')">
       <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\**\hdf5.dll">
-        <Link>hdf5.dll</Link>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <Link>$(HDFRuntimeDir_x64)hdf5.dll</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\**\hdf5_hl.dll">
-        <Link>hdf5_hl.dll</Link>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <Link>$(HDFRuntimeDir_x64)hdf5_hl.dll</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
   </Target>
+  
 </Project>
