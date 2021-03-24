@@ -20,7 +20,7 @@ env:
   - CONFIGURATION="Release"
 
 before_install:
-  - brew cask install powershell
+  - brew install --cask powershell
 
 before_script:
   - dotnet --info

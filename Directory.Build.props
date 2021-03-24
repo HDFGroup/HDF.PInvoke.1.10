@@ -47,5 +47,5 @@
       <PackagePath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
     </Content>
   </ItemGroup>
-  
+
 </Project>

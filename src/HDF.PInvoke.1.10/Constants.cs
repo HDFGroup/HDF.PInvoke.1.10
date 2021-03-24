@@ -20,5 +20,7 @@ namespace HDF.PInvoke
         public const string DLLFileName = "hdf5";
 
         public const string HLDLLFileName = "hdf5_hl";
+
+        public const string WindowsDLLPath = @"runtimes\win-x{0}\native";
     }
 }
